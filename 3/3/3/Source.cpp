@@ -11,30 +11,28 @@ class Solution
 public:
 	int lengthOfLongestSubstring(string s) 
 	{
-		vector<char> check_vec;
+		vector<int> last_duplicate_pos(255);
+		fill(last_duplicate_pos.begin(), last_duplicate_pos.end(), -1);
 		
 
 		int index = 0;
 		int longest = 0;
+		int running_dup = 0;
 	
-		for_each(s.begin(), s.end(), [&index, &longest, &check_vec](char& c) {
-			check_vec.push_back(c);
+		for_each(s.begin(), s.end(), [&index, &longest, &running_dup, &last_duplicate_pos](char& c) {
 
-			vector<bool> hash(250);
-			fill(hash.begin(), hash.end(), false);
-			int cur_lngst = 0;
-			for (int i = check_vec.size() - 1; i >= 0; i--)
+			if (last_duplicate_pos[c] != -1 && last_duplicate_pos[c] >= running_dup)
 			{
-				if (hash[check_vec[i]])
-					break;
-				hash[check_vec[i]] = true;
-				cur_lngst++;
+				longest = max(longest, index - running_dup);
+				running_dup = last_duplicate_pos[c] + 1;
 			}
-
-			longest = max(longest, cur_lngst);
+			
+			last_duplicate_pos[c] = index;
 
 			index++;
 		});
+
+		longest = max(longest, index - running_dup);
 
 		
 		return longest;
@@ -49,6 +47,8 @@ int main()
 	ans = s.lengthOfLongestSubstring("bbbb");
 	cout << ans << endl;
 	ans = s.lengthOfLongestSubstring("pwwkew");
+	cout << ans << endl;
+	ans = s.lengthOfLongestSubstring("abcabcbb");
 	cout << ans << endl;
 	getchar();
 	return 0;
