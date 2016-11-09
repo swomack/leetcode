@@ -11,7 +11,7 @@ class Solution
 public:
 	int lengthOfLongestSubstring(string s) 
 	{
-		vector<int> last_duplicate_pos(255);
+		vector<int> last_duplicate_pos(128);
 		fill(last_duplicate_pos.begin(), last_duplicate_pos.end(), -1);
 		
 
