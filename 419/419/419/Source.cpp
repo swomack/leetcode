@@ -20,28 +20,38 @@ public:
 		{
 			for (int j = 0; j < width; j++)
 			{
-				//// alternate solution
-				//if (board[i][j] == '.')
-				//{
-				//	if (i > 0  && board[i - 1][j] == 'X')
-				//	{
-				//		total_count++;
-				//		board[i - 1][j] = '-';
-				//	}
+				// alternate solution
+				if (board[i][j] == '.')
+				{
+					if (i > 0  && j < width - 1 && board[i - 1][j] == 'X' &&  board[i - 1][j + 1] != 'X')
+					{
+						total_count++;
+						board[i - 1][j] = '-';
+					}
+					else if (i > 0 && j >= width - 1)
+					{
+						total_count++;
+						board[i - 1][j] = '-';
+					}
 
-				//	if (j > 0 && board[i][j - 1] == 'X')
-				//	{
-				//		total_count++;
-				//		board[i][j - 1] = '-';
-				//	}
-				//}
-				//else if (i == height - 1 && j == width - 1)
-				//{
-				//	total_count++;
-				//}
+					if (j > 0 && i < height - 1 && board[i][j - 1] == 'X' && board[i + 1] [ j - 1] != 'X')
+					{
+						total_count++;
+						board[i][j - 1] = '-';
+					}
+					else if (j > 0 && i >= height - 1)
+					{
+						total_count++;
+						board[i][j - 1] = '-';
+					}
+				}
+				else if (i == height - 1 && j == width - 1)
+				{
+					total_count++;
+				}
 				
 		
-				if (board[i][j] == '-')
+				/*if (board[i][j] == '-')
 					continue;
 
 
@@ -75,7 +85,7 @@ public:
 					}
 				}
 		
-				total_count++;
+				total_count++;*/
 			}
 		}
 
@@ -95,8 +105,12 @@ int main()
 	vector<char> a4 = { '.', '.', '.', 'X' };*/
 
 	vector<char> a1 = { 'X', '.', 'X' };
+	vector<char> a2 = { 'X', '.', 'X' };
+
+	//vector<char> a1 = { '.' };
 
 	src_vector.push_back(a1);
+	src_vector.push_back(a2);
 	/*src_vector.push_back(a2);
 	src_vector.push_back(a3);
 	src_vector.push_back(a4);*/
