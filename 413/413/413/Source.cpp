@@ -10,47 +10,25 @@ class Solution
 public:
 	int numberOfArithmeticSlices(vector<int>& A) 
 	{
-		if (A.size() == 0)
+		if (A.size() < 3)
 			return 0;
 
-		int start = 0;
+		int seq_length = 0;
 		int end = 1;
-
-		int diff = A[end] - A[start];
 		int total_seq = 0;
 
-		while (true)
+		while (++end < A.size())
 		{
-			end++;
-
-			if (end >= A.size())
-				break;
-
-			if (A[end] - A[end - 1] == diff)
+			if (A[end] - A[end - 1] == A[end - 1] - A[end - 2])
 			{
+				seq_length++;
+				total_seq += seq_length; // triangular number
 				continue;
 			}
-			else
-			{
-				int length = end - 1 - start;
-				length -= 1;
-				if (length >= 1)
-				{
-					total_seq += ((length * (length + 1)) / 2);
-				}
-				
-				start = end - 1;
-				diff = A[end] - A[start];
-			}
-		}
+			
+			seq_length = 0;
 
-		int length = end - start;
-		length -= 2;
-		if (length >= 1)
-		{
-			total_seq += ((length * (length + 1)) / 2);
 		}
-
 		return total_seq;
 	}
 };
