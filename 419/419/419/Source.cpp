@@ -28,7 +28,7 @@ public:
 						total_count++;
 						board[i - 1][j] = '-';
 					}
-					else if (i > 0 && j >= width - 1)
+					else if (i > 0 && j >= width - 1 && board[i - 1][j] == 'X')
 					{
 						total_count++;
 						board[i - 1][j] = '-';
@@ -39,7 +39,7 @@ public:
 						total_count++;
 						board[i][j - 1] = '-';
 					}
-					else if (j > 0 && i >= height - 1)
+					else if (j > 0 && i >= height - 1 && board[i][j - 1] == 'X')
 					{
 						total_count++;
 						board[i][j - 1] = '-';
