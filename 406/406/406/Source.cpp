@@ -13,31 +13,36 @@ public:
 	{
 		list<pair<int, int>> result;
 		
+		// sort by the height descending order
 		sort(people.begin(), people.end(), [](pair<int, int> &a, pair<int, int> &b) {
-			if (a.second < b.second)
+			if (a.first > b.first)
 				return true;
-			else if (a.second == b.second && a.first < b.first)
+			else if (a.first == b.first && a.second < b.second)
 				return true;
 
 			return false;
 		});
 
-
+		// use list to insert, faster than using vector directly
 		for_each(people.begin(), people.end(), [&result] (pair<int, int>& element) {
 			list<pair<int, int>>::iterator it = result.begin();
-			int kk = element.second;
-			for (; it != result.end(); it++)
+			int i = element.second;
+			while (i--)
 			{
-				pair<int, int> a = (*it);
-
-				if (element.first > a.first)
-					continue;
-
-				element.second--;
+				it++;
 			}
+			result.insert(it, element);
+
 		});
 
 		vector<pair<int, int>> res;
+
+		for (list<pair<int, int>>::iterator it = result.begin(); it != result.end(); it++)
+		{
+			res.push_back(*(it));
+		}
+
+
 		return res;
 	}
 };
