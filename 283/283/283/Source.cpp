@@ -7,24 +7,33 @@ using namespace std;
 class Solution
 {
 public:
+
+	// swap the zeros with the next element if the element is not 0
+	// if the element is zero then just go through
+	// swap with the first zero of the zero sequence and increment the first_zero value so that 
+	// first zero always point to the first element of the zero sequence
+
 	void moveZeroes(vector<int>& nums)
 	{
-		int zero_copied = 0;
-
-		for (int i = 0; i < nums.size() - zero_copied; i++)
+		int first_zero_element = -1;
+		for (int i = 0; i < nums.size(); i++)
 		{
-			if (nums[i] != 0)
+			if (nums[i] == 0 && first_zero_element == -1) {
+				first_zero_element = i;
 				continue;
-			int range = nums.size() - zero_copied;
-			for (int j = i + 1; j < range; j++)
+			}
+			else if (nums[i] == 0)
 			{
-				int temp = nums[j];
-				nums[j] = nums[j - 1];
-				nums[j - 1] = temp;
+				continue;
+			}
+			else if (nums[i] && first_zero_element == -1)
+			{
+				continue;
 			}
 
-			zero_copied++;
-			i--;
+			nums[first_zero_element] = nums[i];
+			nums[i] = 0;
+			first_zero_element++;
 		}
 	}
 };
