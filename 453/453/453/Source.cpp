@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <limits>
 
 using namespace std;
 
@@ -10,16 +11,16 @@ public:
 	int minMoves(vector<int>& nums) 
 	{
 		int result = 0;
-		sort(nums.begin(), nums.end());
+		int min_element = INT_MAX;
 
-		int lowest = nums[0];
+		for_each(nums.begin(), nums.end(), [&min_element](int element) {
+			min_element = min(min_element, element);
+		});
 
-		for (int i = nums.size() - 1; i > 0; i--)
-		{
-			int diff = nums[i] + result - lowest;
-			result += diff;
-			lowest += diff;
-		}
+		
+		for_each(nums.begin(), nums.end(), [&min_element, &result](int element) {
+			result += (element - min_element);
+		});
 
 		return result;
 	}
