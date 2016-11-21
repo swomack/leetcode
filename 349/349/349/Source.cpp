@@ -2,10 +2,11 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_set>
+#include <unordered_map>
 
 using namespace std;
 
-#define MAKE_SET(a, c) for_each(a.begin(), a.end(), c);
+
 
 class Solution 
 {
@@ -21,22 +22,20 @@ public:
 		if (nums1.size() == 0 || nums2.size() == 0)
 			return res;
 
-		unordered_set<int> larger;
-		unordered_set<int> smaller;
+		unordered_map<int, int> map;
 
-		MAKE_SET(nums1, [&larger](int element) {
-			larger.insert(element);
+		for_each(nums2.begin(), nums2.end(), [&map](int element) {
+			map[element] ++;
 		});
 
-		MAKE_SET(nums2, [&smaller](int element) {
-			smaller.insert(element);
-		});
-		
-		for_each(smaller.begin(), smaller.end(), [&larger, &res](int element) {
-			unordered_set<int>::iterator it = larger.find(element);
-
-			if (it != larger.end())
-				res.push_back(*it);
+		for_each(nums1.begin(), nums1.end(), [&map, &res](int element) {
+			int val = map[element];
+			if (val > 0)
+			{
+				res.push_back(element);
+				map[element] = 0;
+			}
+				
 		});
 
 		return res;
@@ -48,7 +47,7 @@ int main()
 	Solution s;
 
 	vector<int> param1{1, 2, 3};
-	vector<int> param2{2, 3};
+	vector<int> param2{4, 4};
 
 	vector<int> result = s.intersection(param1, param2);
 	getchar();
