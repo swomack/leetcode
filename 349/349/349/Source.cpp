@@ -5,51 +5,38 @@
 
 using namespace std;
 
+#define MAKE_SET(a, c) for_each(a.begin(), a.end(), c);
+
 class Solution 
 {
 public:
 	vector<int> intersection(vector<int>& nums1, vector<int>& nums2) 
 	{
+
+		if (nums2.size() > nums1.size())
+			return intersection(nums2, nums1);
+
 		vector<int> res;
 
 		if (nums1.size() == 0 || nums2.size() == 0)
 			return res;
 
-		unordered_set<int> res_cont;
+		unordered_set<int> larger;
+		unordered_set<int> smaller;
 
-
-		sort(nums1.begin(), nums1.end());
-
-		for_each(nums2.begin(), nums2.end(), [&res_cont, &nums1](int element) {
-		
-			int start = 0;
-			int end = nums1.size() - 1;
-
-			while (start <= end) 
-			{
-				int middle = (start + end) / 2;
-
-				if (nums1[middle] == element)
-				{
-					res_cont.insert(element);
-					break;
-				}
-
-				if (nums1[middle] > element)
-				{
-					end = middle - 1;
-					continue;
-				}
-
-				start = middle + 1;
-
-			}
-		
+		MAKE_SET(nums1, [&larger](int element) {
+			larger.insert(element);
 		});
 
+		MAKE_SET(nums2, [&smaller](int element) {
+			smaller.insert(element);
+		});
+		
+		for_each(smaller.begin(), smaller.end(), [&larger, &res](int element) {
+			unordered_set<int>::iterator it = larger.find(element);
 
-		for_each(res_cont.begin(), res_cont.end(), [&res](int element) {
-			res.push_back(element);
+			if (it != larger.end())
+				res.push_back(*it);
 		});
 
 		return res;
@@ -61,7 +48,7 @@ int main()
 	Solution s;
 
 	vector<int> param1{1, 2, 3};
-	vector<int> param2{4, 4};
+	vector<int> param2{2, 3};
 
 	vector<int> result = s.intersection(param1, param2);
 	getchar();
