@@ -1,0 +1,3 @@
+﻿  Source.cpp
+d:\works\acm\leetcode\350\350\350\source.cpp(52): error C2039: 'intersection': is not a member of 'Solution'
+  d:\works\acm\leetcode\350\350\350\source.cpp(12): note: see declaration of 'Solution'
