@@ -7,20 +7,21 @@ using namespace std;
 class Solution 
 {
 public:
+
+	// 3 ^ 0 ^ 0 ^ 1 ^ 1 ^ 3 ^ 2 = 2 
 	int missingNumber(vector<int>& nums) 
 	{
-		int size = nums.size();
+		int result = nums.size();
 
-		int expected_sum = ((size) * (size + 1)) / 2;
+		int index = 0;
 
-		int sum = 0;
-
-		for_each(nums.begin(), nums.end(), [&sum](int element) {
-			sum += element;
+		for_each(nums.begin(), nums.end(), [&result, &index](int element) {
+			result ^= element;
+			result ^= index++;
 		});
 
 
-		return expected_sum - sum;
+		return result;
 
 	}
 };
