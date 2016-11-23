@@ -6,45 +6,67 @@
 using namespace std;
 
 
-class Solution 
+class Solution
 {
 public:
-	vector<vector<int>> fourSum(vector<int>& nums, int target) 
+	vector<vector<int>> fourSum(vector<int>& nums, int target)
 	{
 		vector<vector<int>> results;
 
+		if (nums.size() < 4)
+			return results;
+
 		sort(nums.begin(), nums.end());
-		
-		unordered_map<int, vector<pair<int, int>>> map;
 
-		// make a map to store the summation of all pair
-		for (int i = 0; i < nums.size();)
+		// this is like 3 sum, except that the 3 sum loop will be runned for 4 sum
+
+		// using four pointer O(n^3)
+		for (int i = 0; i < nums.size() - 3;)
 		{
-			for (int j = i + 1; j < nums.size();)
+			// just like 3sum
+			for (int j = i + 1; j < nums.size() - 2;)
 			{
-				int sum = nums[i] + nums[j];
-				map[sum].push_back(make_pair(i, j));
+				int start = j + 1;
+				int end = nums.size() - 1;
 
-				while (++j && j < nums.size() && nums[j] == nums[j - 1]);
+				int rest_sum = target - nums[i] - nums[j];
+
+				// sliding window - two sum (since sorted)
+				while (start < end)
+				{
+					int this_sum = nums[start] + nums[end];
+					if (this_sum == rest_sum)
+					{
+						vector<int> result;
+						result.push_back(nums[i]);
+						result.push_back(nums[j]);
+						result.push_back(nums[start]);
+						result.push_back(nums[end]);
+
+						results.push_back(result);
+
+						while (++start && start < end && nums[start] == nums[start - 1]);
+						while (--end && start < end && nums[end] == nums[end + 1]);
+					}
+					else if (this_sum < rest_sum) // need to increase the left pointer
+					{
+						start++;
+					}
+					else
+					{
+						end--;
+					}
+				}
+
+				while (++j && j < nums.size() - 2 && nums[j] == nums[j - 1]);
+					
 			}
 
-			while (++i && i < nums.size() && nums[i] == nums[i - 1]);
-		}
-
-		// now it is a two sum problem
-
-		for (int i = 0, j = nums.size() - 1; i < j ;)
-		{
-			int search = target - nums[i] - nums[j];
-
-			vector<pair<int, int>> kk = map[search];
-
-			for (int k = 0; k < kk.size(); k++)
-			{
-				if(pair)
-			}
+			while (++i && i < nums.size() - 3 && nums[i] == nums[i - 1]);
 		}
 	
+		
+		return results;
 	}
 };
 
