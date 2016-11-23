@@ -10,40 +10,23 @@ public:
 	vector<int> twoSum(vector<int>& numbers, int target) 
 	{
 		vector<int> result;
-
-		int size = numbers.size() - 1;
 	
-		for (int i = 0; i <= size; i++)
+		for (int i = 0, j = numbers.size() - 1; ;)
 		{
-			int search = target - numbers[i];
-
-			int start = i + 1;
-			int end = size;
-
-			while (start <= end)
+			int res = numbers[i] + numbers[j];
+			if ( res == target)
 			{
-				int middle = (start + end) / 2;
-
-				if (numbers[middle] == search)
-				{
-					result.push_back(i + 1);
-					result.push_back(middle + 1);
-					break;
-				}
-				else if (numbers[middle] > search)
-				{
-					end = middle - 1;
-					continue;
-				}
-				else
-				{
-					start = middle + 1;
-				}
-			}
-
-			if (result.size())
-			{
+				result.push_back(i + 1);
+				result.push_back(j + 1);
 				break;
+			}
+			else if (res < target)
+			{
+				i++;
+			}
+			else
+			{
+				j--;
 			}
 		}
 
@@ -55,9 +38,9 @@ int main()
 {
 	Solution s;
 
-	vector<int> param{1, 2, 3, 4, 4, 35, 55};
+	vector<int> param{0,0,3,4};
 
-	vector<int> res = s.twoSum(param, 8);
+	vector<int> res = s.twoSum(param, 0);
 
 	getchar();
 	return 0;
