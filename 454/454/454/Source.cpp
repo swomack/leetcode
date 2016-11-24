@@ -9,24 +9,26 @@ class Solution {
 public:
 	int fourSumCount(vector<int>& A, vector<int>& B, vector<int>& C, vector<int>& D) 
 	{
-		int size = A.size();
 		int count = 0;
+		int size = A.size();
 
 		unordered_map<int, int> map;
-
-		for (int i = 0; i < size; i++)
-			map[D[i]]++;
+	
 
 		for (int i = 0; i < size; i++)
 		{
 			for (int j = 0; j < size; j++)
 			{
-				for (int k = 0; k < size; k++)
-				{
-					int search = 0 - A[i] - B[j] - C[k];
+				map[A[i] + B[j]]++;
+			}
+		}
 
-					count += map[search];
-				}
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				int sum = C[i] + D[j];
+				count += map[-sum];
 			}
 		}
 
