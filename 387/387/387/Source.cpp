@@ -11,7 +11,7 @@ public:
 	int firstUniqChar(string s) 
 	{
 		vector<int> map(26);
-		int result = 0;
+		int result = -1;
 
 
 		for_each(s.begin(), s.end(), [&map](char element) {
@@ -19,16 +19,17 @@ public:
 		});
 
 
-		string::iterator it = find_if(s.begin(), s.end(), [&result, &map](char element) {
+		int index = 0;
+		find_if(s.begin(), s.end(), [&index, &result, &map](char element) {
 			if (map[element - 97] == 1)
+			{
+				result = index;
 				return true;
+			}
 
-			result++;
+			index++;
 			return false;
 		});
-
-		if (it == s.end())
-			return -1;
 
 		return result;
 	}
