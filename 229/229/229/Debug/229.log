@@ -1,0 +1,5 @@
+﻿  Source.cpp
+d:\works\acm\leetcode\229\229\229\source.cpp(20): warning C4018: '<': signed/unsigned mismatch
+d:\works\acm\leetcode\229\229\229\source.cpp(42): warning C4018: '<': signed/unsigned mismatch
+  229.vcxproj -> D:\Works\ACM\Leetcode\229\229\Debug\229.exe
+  229.vcxproj -> D:\Works\ACM\Leetcode\229\229\Debug\229.pdb (Partial PDB)
