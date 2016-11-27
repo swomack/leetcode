@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
@@ -12,10 +13,26 @@ public:
 		if (s.length() != t.length())
 			return false;
 
-		sort(s.begin(), s.end());
-		sort(t.begin(), t.end());
+		unordered_map<char, int> map;
 
-		return s == t;
+		for_each(s.begin(), s.end(), [&map](char element) {
+			map[element]++;
+		});
+
+		bool result = true;
+
+		find_if(t.begin(), t.end(), [&map, &result](char element) {
+			if (map[element])
+			{
+				map[element] --;
+				return false;
+			}
+
+			result = false;
+			return true;
+		});
+
+		return result;
 	}
 };
 
