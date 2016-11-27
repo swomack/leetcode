@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -13,26 +14,16 @@ public:
 		if (s.length() != t.length())
 			return false;
 
-		unordered_map<char, int> map;
+		vector<int> frequency_s(26);
+		vector<int> frequency_t(26);
 
-		for_each(s.begin(), s.end(), [&map](char element) {
-			map[element]++;
-		});
+		for (int i = 0; i < s.length(); i++)
+		{
+			frequency_s[s[i] - 97]++;
+			frequency_t[t[i] - 97]++;
+		}
 
-		bool result = true;
-
-		find_if(t.begin(), t.end(), [&map, &result](char element) {
-			if (map[element])
-			{
-				map[element] --;
-				return false;
-			}
-
-			result = false;
-			return true;
-		});
-
-		return result;
+		return equal(frequency_s.begin(), frequency_s.end(), frequency_t.begin()) ? true : false;
 	}
 };
 

@@ -1,3 +1,4 @@
 ﻿  Source.cpp
+d:\works\acm\leetcode\242\242\242\source.cpp(20): warning C4018: '<': signed/unsigned mismatch
   242.vcxproj -> D:\Works\ACM\Leetcode\242\242\Debug\242.exe
   242.vcxproj -> D:\Works\ACM\Leetcode\242\242\Debug\242.pdb (Partial PDB)
