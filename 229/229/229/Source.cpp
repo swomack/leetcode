@@ -9,56 +9,6 @@ class Solution
 {
 public:
 
-	bool majortyElementHelper(vector<int>& nums, int min_count, int &val)
-	{
-		int major = 0;
-		int count = 0;
-		int index = -1;
-
-		bool ret = true;
-
-		for (int i = 0; i < nums.size(); i++)
-		{
-			if (count == 0)
-			{
-				count = 1;
-				major = nums[i];
-				index = i;
-			}
-			else
-			{
-				if (major == nums[i])
-					count++;
-				else
-					count--;
-			}
-		}
-
-
-		if (min_count >= 0)
-		{
-			int count_major = 0;
-
-			for (int i = 0; i < nums.size(); i++)
-			{
-				if (major == nums[i])
-				{
-					count_major++;
-				}
-			}
-
-			if (count_major < min_count)
-				ret = false;
-		}
-		
-
-		nums.erase(std::remove(nums.begin(), nums.end(), major), nums.end());
-
-		val = major;
-
-		return ret;
-	}
-
 	vector<int> majorityElement(vector<int>& nums) 
 	{
 
@@ -67,13 +17,53 @@ public:
 		if (nums.size() <= 0)
 			return result;
 
-		int min_size = nums.size() / 3 + 1;
-		int r;
-		if(majortyElementHelper(nums, min_size, r))
-			result.push_back(r);
+		int major_1 = -1;
+		int major_count_1 = 0;
+		int major_2 = -1;
+		int major_count_2 = 0;
+		
+		for (int i = 0; i < nums.size(); i++)
+		{
+			if (major_1 == nums[i])
+			{
+				major_count_1++;
+			}
+			else if (major_2 == nums[i])
+			{
+				major_count_2 ++;
+			}
+			else if (major_count_1 == 0)
+			{
+				major_1 = nums[i];
+				major_count_1 = 1;
+			}
+			else if (major_count_2 == 0)
+			{
+				major_2 = nums[i];
+				major_count_2 = 1;
+			}
+			else
+			{
+				major_count_1--;
+				major_count_2--;
+			}
+		}
 
-		if(majortyElementHelper(nums, min_size, r))
-			result.push_back(r);
+		vector<int> freq(2);
+
+		for (int i = 0; i < nums.size(); i++)
+		{
+			if (major_1 == nums[i])
+				freq[0]++;
+			else if (major_2 == nums[i])
+				freq[1]++;
+		}
+
+		int min_size = nums.size() / 3;
+		if (freq[0] > min_size)
+			result.push_back(major_1);
+		if (freq[1] > min_size)
+			result.push_back(major_2);
 		
 		return result;
 	}
@@ -83,7 +73,7 @@ int main()
 {
 	Solution s;
 
-	vector<int> param{1, 1,1, 2, 3, 4, 5, 6};
+	vector<int> param{1, 2, 2, 3, 2, 1, 1, 3};
 
 	vector<int> result = s.majorityElement(param);
 
