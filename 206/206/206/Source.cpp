@@ -14,30 +14,31 @@ using namespace std;
 class Solution 
 {
 public:
+
+	ListNode* recursion(ListNode* prev, ListNode* next)
+	{
+		if (next->next == NULL)
+		{
+			ListNode* tail = next;
+			next->next = prev;
+			return tail;
+		}
+
+		ListNode* temp = recursion(next, next->next);
+
+		next->next = prev;
+
+		return temp;
+	}
+
 	ListNode* reverseList(ListNode* head) 
 	{
-		stack<int> rev_stack;
+		if (head == NULL || head->next == NULL)
+			return head;
 
-		ListNode* temp = head;
-
-		while (head)
-		{
-			rev_stack.push(head->val);
-			head = head->next;
-		}
-
-
-		head = temp;
-
-		while (!rev_stack.empty())
-		{
-			temp->val = rev_stack.top();
-			rev_stack.pop();
-			temp = temp->next;
-		}
-
-		return head;
-
+		ListNode* temp = recursion(head, head->next);
+		head->next = NULL;
+		return temp;
 	}
 };
 
