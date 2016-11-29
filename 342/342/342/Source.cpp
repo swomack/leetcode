@@ -16,12 +16,13 @@ public:
 		if (num % 16)
 			return num == 4;
 
-		int log_val = log10(num) / log10(2);
-
-		if (log_val % 2)
+		if (num & (num - 1))
 			return false;
 
-		return ((int)(pow(2, log_val)) == num);
+		while (num > 1)
+			num >>= 2;
+
+		return num == 1;
 	}
 };
 
