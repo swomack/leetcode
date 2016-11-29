@@ -11,6 +11,10 @@ public:
 	{
 		if (n <= 0)
 			return false;
+
+		if (n % 3) return n == 1;
+
+		if (n % 9) return n == 3;
 		
 		int log_val = (log10(n)) / log10(3);
 
