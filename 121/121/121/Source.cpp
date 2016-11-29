@@ -18,10 +18,18 @@ public:
 		// we will check the every biggest output for each local maxima
 		for (int i = prices.size() - 1; i >= 0; i--)
 		{
-			output = max(output, highest - prices[i]);
-
+			int number = prices[i];
 			// if it is highest then we wont sell after it if we buy before it
-			highest = max(highest, prices[i]);
+			if (number > highest)
+			{
+				highest = number;
+				continue;
+			}
+
+			// else we check if buying here can give us max output
+			int value = highest - number;
+			if (value > output)
+				output = value;
 		}
 
 		return output;
