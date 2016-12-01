@@ -18,9 +18,14 @@ class Solution
 public:
 	bool isSymmetric(TreeNode* root)
 	{
-		bool result = true;
 		if (root == NULL || (root->left == NULL && root->right == NULL))
-			return result;
+			return true;
+
+		if ((root->left == NULL && root->right != NULL) || (root->left != NULL && root->right == NULL))
+			return false;
+
+		if (root->left->val != root->right->val)
+			return false;
 
 		queue<TreeNode*> left_queue;
 		queue<TreeNode*> right_queue;
@@ -29,50 +34,32 @@ public:
 
 		while (!left_queue.empty() && !right_queue.empty())
 		{
-			int left_size = left_queue.size();
-			int right_size = right_queue.size();
 			
-			if (left_size != right_size)
-			{
-				result = false;
-				break;
-			}
+			TreeNode* left_node = left_queue.front();
+			left_queue.pop();
 
-			while (left_size--)
-			{
-				TreeNode* left_node = left_queue.front();
-				left_queue.pop();
+			TreeNode* right_node = right_queue.front();
+			right_queue.pop();
 
-				TreeNode* right_node = right_queue.front();
-				right_queue.pop();
+			if (!left_node && !right_node)
+				continue;
 
-				if (!left_node && !right_node)
-					continue;
+			if ((left_node && !right_node) || (!left_node && right_node))
+				return false;
 
-				if ((left_node && !right_node) || (!left_node && right_node))
-				{
-					result = false;
-					break;
-				}
+			if (left_node->val != right_node->val)
+				return false;
 
-				if (left_node->val != right_node->val)
-				{
-					result = false;
-					break;
-				}
-
-				left_queue.push(left_node->left);
-				left_queue.push(right_node->left);
-				right_queue.push(right_node->right);
-				right_queue.push(left_node->right);
-			}
-
-			if (!result)
-				break;
-
+			// first we will check from the middle to wide
+			// this improve performance because of dataset
+			left_queue.push(right_node->left);
+			left_queue.push(left_node->left);
+			right_queue.push(left_node->right);
+			right_queue.push(right_node->right);
+			
 		}
 
-		return result;
+		return true;
 	}
 };
 
