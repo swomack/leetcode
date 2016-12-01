@@ -22,60 +22,54 @@ public:
 		if (root == NULL || (root->left == NULL && root->right == NULL))
 			return result;
 
-		queue<TreeNode*> level_queue;
-		level_queue.push(root->left);
-		level_queue.push(root->right);
+		queue<TreeNode*> left_queue;
+		queue<TreeNode*> right_queue;
+		left_queue.push(root->left);
+		right_queue.push(root->right);
 
-		while (!level_queue.empty())
+		while (!left_queue.empty() && !right_queue.empty())
 		{
-			int row_size = level_queue.size();
-			vector<TreeNode*> row;
-
-			while (row_size--)
-			{
-				TreeNode* node = level_queue.front();
-				level_queue.pop();
-
-				row.push_back(node);
-
-				if (node)
-				{
-					level_queue.push(node->left);
-					level_queue.push(node->right);
-				}
-			}
-
-			if (row.size() % 2)
+			int left_size = left_queue.size();
+			int right_size = right_queue.size();
+			
+			if (left_size != right_size)
 			{
 				result = false;
 				break;
 			}
 
-			bool symmetric = true;
-			for (int i = 0, j = row.size() - 1; i < j; i++, j--)
+			while (left_size--)
 			{
-				if (row[i] && row[j])
-				{
-					if (row[i]->val == row[j]->val)
-						continue;
+				TreeNode* left_node = left_queue.front();
+				left_queue.pop();
 
-					symmetric = false;
+				TreeNode* right_node = right_queue.front();
+				right_queue.pop();
+
+				if (!left_node && !right_node)
+					continue;
+
+				if ((left_node && !right_node) || (!left_node && right_node))
+				{
+					result = false;
 					break;
 				}
-				else
-				{
-					if (row[i] == NULL && row[j] == NULL)
-						continue;
 
-					symmetric = false;
+				if (left_node->val != right_node->val)
+				{
+					result = false;
 					break;
 				}
+
+				left_queue.push(left_node->left);
+				left_queue.push(right_node->left);
+				right_queue.push(right_node->right);
+				right_queue.push(left_node->right);
 			}
-
-			result = symmetric;
 
 			if (!result)
 				break;
+
 		}
 
 		return result;
