@@ -1,0 +1,4 @@
+﻿  Source.cpp
+d:\works\acm\leetcode\202\202\202\source.cpp(42): warning C4101: 's': unreferenced local variable
+  202.vcxproj -> D:\Works\ACM\Leetcode\202\202\Debug\202.exe
+  202.vcxproj -> D:\Works\ACM\Leetcode\202\202\Debug\202.pdb (Partial PDB)
