@@ -15,37 +15,21 @@ struct TreeNode
 class Solution 
 {
 public:
-
-	unordered_map<TreeNode*, int> heightMap;
-
 	int getHeight(TreeNode* node)
 	{
 		if (node == NULL)
 			return 0;
 
-		int heightFromMap = heightMap[node];
-
-		if (heightFromMap > 0)
-			return heightFromMap;
-
-		heightFromMap = max(getHeight(node->left), getHeight(node->right)) + 1;
-		heightMap[node] = heightFromMap;
-		return heightFromMap;
+		return max(getHeight(node->left), getHeight(node->right)) + 1;
 	}
 
-	bool isBalancedHelper(TreeNode * node)
-	{
-		if (node == NULL)
-			return true;
-
-		return isBalancedHelper(node->left) && isBalancedHelper(node->right) && abs(getHeight(node->left) - getHeight(node->right)) <= 1;
-	}
 
 	bool isBalanced(TreeNode* root) 
 	{
-		heightMap.clear();
+		if (root == NULL)
+			return true;
 
-		return isBalancedHelper(root);
+		return isBalanced(root->left) && isBalanced(root->right) && abs(getHeight(root->left) - getHeight(root->right)) <= 1;
 	}
 };
 
