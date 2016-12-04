@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <stack>
+#include <unordered_map>
 
 using namespace std;
 
@@ -16,20 +17,35 @@ struct TreeNode
 class Solution
 {
 public:
-	void inorderTraversalHelper(TreeNode* root, vector<int>& result)
-	{
-		if (root == NULL)
-			return;
 
-		inorderTraversalHelper(root->left, result);
-		result.push_back(root->val);
-		inorderTraversalHelper(root->right, result);
-	}
 	vector<int> inorderTraversal(TreeNode* root)
 	{
 		vector<int> result;
 
-		inorderTraversalHelper(root, result);
+		if (root == NULL)
+			return result;
+
+		stack<TreeNode*> stck;
+		unordered_map<TreeNode*, bool> visited;
+		stck.push(root);
+
+		while (!stck.empty())
+		{
+			TreeNode* top = stck.top();
+
+			if (top->left && visited[top->left] == false)
+			{
+				stck.push(top->left);
+				continue;
+			}
+
+			stck.pop();
+			result.push_back(top->val);
+			visited[top] = true;
+
+			if (top->right)
+				stck.push(top->right);
+		}
 
 		return result;
 	}
