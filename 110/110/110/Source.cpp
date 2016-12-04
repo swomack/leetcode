@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
@@ -14,29 +15,49 @@ struct TreeNode
 class Solution 
 {
 public:
+
+	unordered_map<TreeNode*, int> heightMap;
+
 	int getHeight(TreeNode* node)
 	{
 		if (node == NULL)
 			return 0;
 
-		return max(getHeight(node->left), getHeight(node->right)) + 1;
+		int heightFromMap = heightMap[node];
+
+		if (heightFromMap > 0)
+			return heightFromMap;
+
+		heightFromMap = max(getHeight(node->left), getHeight(node->right)) + 1;
+		heightMap[node] = heightFromMap;
+		return heightFromMap;
 	}
-	bool isBalanced(TreeNode* root) 
+
+	bool isBalancedHelper(TreeNode * node)
 	{
-		if (root == NULL)
+		if (node == NULL)
 			return true;
 
-		bool leftBalanced = isBalanced(root->left);
-		bool rightBalanced = isBalanced(root->right);
+		return isBalancedHelper(node->left) && isBalancedHelper(node->right) && abs(getHeight(node->left) - getHeight(node->right)) <= 1;
+	}
 
+	bool isBalanced(TreeNode* root) 
+	{
+		heightMap.clear();
 
-
-		return leftBalanced && rightBalanced && abs(getHeight(root->left) - getHeight(root->right)) <= 1;
+		return isBalancedHelper(root);
 	}
 };
 
 int main()
 {
 	Solution s;
+
+	TreeNode* root = new TreeNode(1);
+	root->left = new TreeNode(2);
+	root->right = new TreeNode(3);
+
+	bool result = s.isBalanced(root);
+
 	return 0;
 }
