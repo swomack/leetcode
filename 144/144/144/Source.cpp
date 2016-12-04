@@ -16,20 +16,30 @@ struct TreeNode
 class Solution 
 {
 public:
-	void preorderTraversalHelper(TreeNode* root, vector<int>& result)
-	{
-		if (root == NULL)
-			return;
-
-		result.push_back(root->val);
-		preorderTraversalHelper(root->left, result);
-		preorderTraversalHelper(root->right, result);
-	}
-
 	vector<int> preorderTraversal(TreeNode* root)
 	{
 		vector<int> result;
-		preorderTraversalHelper(root, result);
+
+		if (root == NULL)
+			return result;
+
+		stack<TreeNode*> stck;
+		stck.push(root);
+
+		while (!stck.empty())
+		{
+			TreeNode* temp = stck.top();
+			stck.pop();
+
+			result.push_back(temp->val);
+
+			if (temp->right)
+				stck.push(temp->right);
+
+			if (temp->left)
+				stck.push(temp->left);
+		}
+
 		return result;
 	}
 };
