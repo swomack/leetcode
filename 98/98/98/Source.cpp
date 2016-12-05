@@ -14,35 +14,39 @@ struct TreeNode
 
 
 
-class Solution
+class Solution 
 {
 public:
 
-	void inOrderTraverse(TreeNode* node, vector<int>& result)
+	bool isValidBSTHelper(TreeNode* node, int min_limit, int max_limit, bool left_inclusive, bool right_inclusive)
 	{
 		if (node == NULL)
-			return;
+			return true;
 
-		inOrderTraverse(node->left, result);
-		result.push_back(node->val);
-		inOrderTraverse(node->right, result);
+		bool bst;
+		
+		if(left_inclusive && right_inclusive)
+			bst = node->val >= min_limit && node->val <= max_limit ? true : false;
+		else if (left_inclusive)
+			bst = node->val >= min_limit && node->val < max_limit ? true : false;
+		else if(right_inclusive)
+			bst = node->val > min_limit && node->val <= max_limit ? true : false;
+		else
+			bst = node->val > min_limit && node->val < max_limit ? true : false;
+
+		if (!bst)
+			return false;
+
+		return isValidBSTHelper(node->left, min_limit, node->val, left_inclusive, false) && isValidBSTHelper(node->right, node->val, max_limit, false, right_inclusive);
 	}
 
-	bool isValidBST(TreeNode* root)
+
+	bool isValidBST(TreeNode* root) 
 	{
 		if (root == NULL)
 			return true;
 
-		vector<int> in_order;
-		inOrderTraverse(root, in_order);
-
-		for (int i = 0; i < in_order.size() - 1; i++)
-		{
-			if (in_order[i + 1] <= in_order[i])
-				return false;
-		}
-
-		return true;
+		return isValidBSTHelper(root->left, INT_MIN, root->val, true, false) && isValidBSTHelper(root->right, root->val, INT_MAX, false, true);
 	}
 };
 
