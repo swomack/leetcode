@@ -43,7 +43,6 @@ public:
 		carry = sum / 10;
 		sum %= 10;
 		ListNode* res = new ListNode(sum);
-		ListNode* temp = res;
 		l1 = l1->next;
 		l2 = l2->next;
 
@@ -53,10 +52,11 @@ public:
 			carry = sum / 10;
 			sum %= 10;
 
-			temp->next = new ListNode(sum);
+			ListNode* node = new ListNode(sum);
+			node->next = res;
+			res = node;
 			l1 = l1->next;
 			l2 = l2->next;
-			temp = temp->next;
 		}
 
 		while (l1)
@@ -65,9 +65,10 @@ public:
 			carry = sum / 10;
 			sum %= 10;
 
-			temp->next = new ListNode(sum);
+			ListNode* node = new ListNode(sum);
+			node->next = res;
+			res = node;
 			l1 = l1->next;
-			temp = temp->next;
 		}
 
 		while (l2)
@@ -76,15 +77,20 @@ public:
 			carry = sum / 10;
 			sum %= 10;
 
-			temp->next = new ListNode(sum);
+			ListNode* node = new ListNode(sum);
+			node->next = res;
+			res = node;
 			l2 = l2->next;
-			temp = temp->next;
 		}
 
-		if(carry)
-			temp->next = new ListNode(1);
-
-		return reverse(res, res->next);
+		if (carry)
+		{
+			ListNode* node = new ListNode(carry);
+			node->next = res;
+			res = node;
+		}
+	
+		return res;
 	
 	}
 };
