@@ -1,4 +1,5 @@
 #include <iostream>
+#include <climits>
 #include <vector>
 
 using namespace std;
@@ -11,7 +12,9 @@ struct TreeNode
 	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-class Solution 
+
+
+class Solution
 {
 public:
 
@@ -25,7 +28,7 @@ public:
 		inOrderTraverse(node->right, result);
 	}
 
-	bool isValidBST(TreeNode* root) 
+	bool isValidBST(TreeNode* root)
 	{
 		if (root == NULL)
 			return true;
@@ -35,13 +38,16 @@ public:
 
 		for (int i = 0; i < in_order.size() - 1; i++)
 		{
-			if (in_order[i + 1] < in_order[i])
+			if (in_order[i + 1] <= in_order[i])
 				return false;
 		}
 
 		return true;
 	}
 };
+
+
+
 
 
 int main()
