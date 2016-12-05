@@ -22,6 +22,7 @@
     <ProjectGuid>{89ADA79C-CCC7-4892-879E-DF8E91D598A2}</ProjectGuid>
     <RootNamespace>My98</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>96</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
