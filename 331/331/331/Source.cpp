@@ -12,73 +12,50 @@ class Solution
 {
 public:
 
-	void split(const string &s, char delim, vector<string> &elems) 
+	void split(const string &s, char delim, stack<string> &elems) 
 	{
 		stringstream ss;
 		ss.str(s);
 		string item;
 		while (getline(ss, item, delim)) 
 		{
-			elems.push_back(item);
+			elems.push(item);
 		}
 	}
 
 
-	vector<string> split(const string &s, char delim) 
+	stack<string> split(const string &s, char delim) 
 	{
-		vector<string> elems;
+		stack<string> elems;
 		split(s, delim, elems);
 		return elems;
 	}
 
 	bool isValidSerialization(string preorder) 
 	{
-		vector<string> nodes = split(preorder, ',');
+		stack<string> nodes = split(preorder, ',');
 		
 		if (nodes.size() == 0)
 			return false;
 
-		if (nodes[0] == "#" && nodes.size() > 1)
-			return false;
-		else if (nodes[0] == "#" && nodes.size() == 1)
-			return true;
-
-
-		stack<string> ss;
-		ss.push(nodes[0]);
-
-		for (int i = 1; i < nodes.size(); i++)
+		while (!nodes.empty())
 		{
-			if (ss.empty())
+			if (nodes.top() != "#")
 				return false;
 
-			if (nodes[i] != "#")
-				ss.push(nodes[i]);
-			else
-			{
-				if (ss.top() != "#")
-				{
-					ss.push(nodes[i]);
-				}
-				else
-				{
-					if (ss.size() < 2)
-						return false;
+			nodes.pop();
 
-					ss.pop();
-					ss.pop();
-					ss.push(nodes[i]);
-				}
-			}
+			if (nodes.empty() || nodes.top() != "#")
+				return false;
+
+			nodes.pop();
 		}
-
-		return ss.size() == 1 && ss.top() == "#";
-
 	}
 };
 
 int main()
 {
 	Solution s;
+	bool isBT = s.isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#");
 	return 0;
 }
