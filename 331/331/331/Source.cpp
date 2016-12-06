@@ -4,6 +4,7 @@
 #include <sstream>
 #include <istream>
 #include <ostream>
+#include <stack>
 
 using namespace std;
 
@@ -33,22 +34,45 @@ public:
 	bool isValidSerialization(string preorder) 
 	{
 		vector<string> nodes = split(preorder, ',');
-
-		if (nodes.size() <= 0)
-			return true;
-
-		if (nodes.size() > 1 && nodes[0] == "#")
+		
+		if (nodes.size() == 0)
 			return false;
 
+		if (nodes[0] == "#" && nodes.size() > 1)
+			return false;
+		else if (nodes[0] == "#" && nodes.size() == 1)
+			return true;
 
-		bool found = true;
 
-		while (found)
+		stack<string> ss;
+		ss.push(nodes[0]);
+
+		for (int i = 1; i < nodes.size(); i++)
 		{
-			found = false;
-			// check if there is two ocnsecutive #, if there is then remove those and make 
-			//for(int i = 0; i < )
+			if (ss.empty())
+				return false;
+
+			if (nodes[i] != "#")
+				ss.push(nodes[i]);
+			else
+			{
+				if (ss.top() != "#")
+				{
+					ss.push(nodes[i]);
+				}
+				else
+				{
+					if (ss.size() < 2)
+						return false;
+
+					ss.pop();
+					ss.pop();
+					ss.push(nodes[i]);
+				}
+			}
 		}
+
+		return ss.size() == 1 && ss.top() == "#";
 
 	}
 };
