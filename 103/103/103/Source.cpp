@@ -23,62 +23,36 @@ public:
 		if (root == NULL)
 			return result;
 
-		stack<TreeNode*> nodes;
-		queue<TreeNode*> helper;
-
+		queue<TreeNode*> nodes;
 		nodes.push(root);
 
 		int turn = 0;
 
 		while (!nodes.empty())
 		{
+			turn++;
+			int size = nodes.size();
+			vector<int> row(size);
 			
-			vector<int> row;
+			bool increment = turn % 2 ? true : false;
+			int index = increment ? 0 : size - 1;
 			
-
-			while (!nodes.empty())
+			while (size--)
 			{
-				row.push_back(nodes.top()->val);
-				helper.push(nodes.top());
+				TreeNode* temp = nodes.front();
+				row[index] = temp->val;
 				nodes.pop();
+
+				if (temp->left)
+					nodes.push(temp->left);
+
+				if (temp->right)
+					nodes.push(temp->right);
+
+				increment ? index++ : index--;
 			}
 
 			result.push_back(row);
-
-			if (turn % 2)
-			{
-				while (!helper.empty())
-				{
-					if (helper.front()->right)
-					{
-						nodes.push(helper.front()->right);
-
-					}
-					if (helper.front()->left)
-					{
-						nodes.push(helper.front()->left);
-					}
-					helper.pop();
-				}
-			}
-			else
-			{
-				while (!helper.empty())
-				{
-					if (helper.front()->left)
-					{
-						nodes.push(helper.front()->left);
-						
-					}
-					if (helper.front()->right)
-					{
-						nodes.push(helper.front()->right);
-					}
-					helper.pop();
-				}
-			}
-
-			turn++;
 		}
 
 
