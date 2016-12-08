@@ -4,98 +4,47 @@
 
 using namespace std;
 
-class Solution 
+class Solution
 {
 public:
-	int removeDuplicates(vector<int>& nums) 
+
+	void swap(int* a, int* b)
 	{
+		if (*a == *b)
+			return;
+		*a ^= *b;
+		*b ^= *a;
+		*a ^= *b;
+	}
 
-		if (nums.size() <= 0)
-			return 0;
-
-		if (nums.size() == 1)
-			return 1;
-
-		vector<int> temp;
-		vector<int> dup;
+	int removeDuplicates(vector<int>& nums)
+	{
 		int length = nums.size();
+		if (length < 2)
+			return length;
 
-		int index = 0;
-		while (index < length - 1)
+		int head = 0;
+		int tail = 0;
+
+		while (head < length)
 		{
-			if (nums[index] == nums[index + 1])
+			if (nums[head] == nums[tail])
 			{
-				int val = nums[index];
-				temp.push_back(val);
-
-				index++;
-
-				while (index < length && nums[index] == nums[index - 1])
-				{
-					dup.push_back(nums[index]);
-					index++;
-				}
-			}
-			else
-			{
-				int val = nums[index];
-				temp.push_back(val);
-				index++;
-			}
-		}
-
-		index = 0;
-
-		for (int i = 0; i < temp.size(); i++)
-			nums[index++] = temp[i];
-
-		for (int i = 0; i < dup.size(); i++)
-			nums[index++] = dup[i];
-
-		return temp.size();
-
-		/*int length = nums.size();
-		int head = 1;
-		int tail = 1;
-
-		while(head < length)
-		{
-			if (nums[head] != nums[head - 1])
-			{
-				int temp = nums[head];
-				nums[head] = nums[tail];
-				nums[tail] = temp;
-
 				head++;
-				tail++;
+				continue;
 			}
-			else
-			{
-				int value = nums[head];
-				while (head < length && nums[head] == value)
-					head++;
 
-				if (head != length)
-				{
-					int temp = nums[head];
-					nums[head] = nums[tail];
-					nums[tail] = temp;
-
-					head++;
-					tail++;
-				}
-				
-			}
+			swap(&nums[head++], &nums[++tail]);
 		}
 
-		return tail;*/
+		return ++tail;
 	}
 };
 
 int main()
 {
 	Solution s;
-	vector<int> v{1, 1, 2, 2};
+	vector<int> v{ 1, 2, 3 };
 	int length = s.removeDuplicates(v);
 	return 0;
 }
