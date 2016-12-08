@@ -107,3 +107,15 @@
 105/105/105.VC.db
 222/222/.vs/222/v14/.suo
 222/222/222.VC.db
+223/223/.vs/223/v14/.suo
+26/26/26/Debug/26.log
+*.suo
+*.lastbuildstate
+*.tlog
+*.obj
+*.idb
+*.pdb
+*.log
+*.ilk
+*.exe
+*.db
