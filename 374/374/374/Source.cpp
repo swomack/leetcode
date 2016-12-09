@@ -17,6 +17,9 @@ class Solution
 public:
 	int guessNumber(int n) 
 	{
+		if (n == 1)
+			return 1;
+
 		int low = 1;
 		int high = n;
 
@@ -24,7 +27,11 @@ public:
 		
 		while (true)
 		{
-			middle = (low + high) / 2;
+			middle = low / 2 + high / 2;
+
+			if (low % 2 && high % 2)
+				middle++;
+
 			int feedback = guess(middle);
 
 			switch (feedback)
