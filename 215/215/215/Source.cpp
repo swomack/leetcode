@@ -15,8 +15,9 @@ public:
 		*b = temp;
 	}
 
-	int partition(vector<int>& nums, int i, int j)
+	int partition(vector<int>& nums, int i, int j, int pivot_index)
 	{
+		swap(&nums[j], &nums[pivot_index]);
 		int lower = i - 1;
 
 		for (; i < j; i++)
@@ -34,24 +35,26 @@ public:
 		return lower;
 	}
 
-	void findKthLargestQuickSort(vector<int>& nums, int i, int j, int k)
+	int findKthLargestQuickSort(vector<int>& nums, int i, int j, int k)
 	{
-		int pivot_pos = partition(nums, i, j);
+		if (i == j)
+			return nums[i];
 
-		if (pivot_pos == k)
-			return;
+		int pivot_index = i + floor(rand() % (j - i + 1));
+		pivot_index = partition(nums, i, j, pivot_index);
 
-		if (k < pivot_pos)
-			findKthLargestQuickSort(nums, i, pivot_pos - 1, k);
+		if (pivot_index == k)
+			return nums[pivot_index];
+
+		if (k < pivot_index)
+			return findKthLargestQuickSort(nums, i, pivot_index - 1, k);
 		else
-			findKthLargestQuickSort(nums, pivot_pos + 1, j, k);
+			return findKthLargestQuickSort(nums, pivot_index + 1, j, k);
 	}
 
 	int findKthLargest(vector<int>& nums, int k) 
 	{
-		findKthLargestQuickSort(nums, 0, nums.size() - 1, --k);
-
-		return nums[k];
+		return findKthLargestQuickSort(nums, 0, nums.size() - 1, --k);
 	}
 };
 
