@@ -1,86 +1,35 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <set>
 
 using namespace std;
+
+struct cmpStruct {
+	bool operator() (int const & lhs, int const & rhs) const
+	{
+		return lhs > rhs;
+	}
+};
 
 class Solution 
 {
 public:
 	int thirdMax(vector<int>& nums) 
 	{
-		pair<int, bool> max1;
-		pair<int, bool> max2;
-		pair<int, bool> max3;
+		set<int, cmpStruct> cont;
 
-		for_each(nums.begin(), nums.end(), [&max1, &max2, &max3](int element) {
-			if (max1.second == false)
-			{
-				max1.first = element;
-				max1.second = true;
-				return;
-			}
-
-			if (max1.first == element)
-				return;
-
-			if (max1.first < element)
-			{
-				int temp = max1.first;
-				max1.first = element;
-
-				if (max2.second == false)
-				{
-					max2.first = temp;
-					max2.second = true;
-					return;
-				}
-
-				
-				int temp2 = max2.first;
-				max2.first = temp;
-
-				max3.first = temp2;
-				max3.second = true;
-				return;
-			}
-
-			if (max2.second == false)
-			{
-				max2.first = element;
-				max2.second = true;
-				return;
-			}
-
-			if (max2.first == element)
-				return;
-
-			if (max2.first < element)
-			{
-				int temp = max2.first;
-				max2.first = element;
-
-				max3.first = temp;
-				max3.second = true;
-
-				return;
-			}
-
-			if (max3.second == false)
-			{
-				max3.first = element;
-				max3.second = true;
-				return;
-			}
-
-			if (max3.first < element)
-			{
-				
-				max3.first = element;
-			}
+		for_each(nums.begin(), nums.end(), [&cont](int element) {
+			cont.insert(element);
 		});
 
-		return max3.second ? max3.first : max1.first;
+		if (cont.size() < 3)
+			return *(cont.begin());
+
+		cont.erase(cont.begin());
+		cont.erase(cont.begin());
+
+		return *(cont.begin());
 	}
 };
 
