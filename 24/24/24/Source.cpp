@@ -12,9 +12,29 @@ struct ListNode
 class Solution 
 {
 public:
+
+	ListNode* swapPairsHelper(ListNode* prev)
+	{
+		if (!prev)
+			return prev;
+
+		ListNode* next = prev->next;
+
+		if (!next)
+			return prev;
+
+		prev->next = next->next;
+		next->next = prev;
+
+		prev->next = swapPairsHelper(prev->next);
+
+		return next;
+
+	}
+	
 	ListNode* swapPairs(ListNode* head) 
 	{
-
+		return swapPairsHelper(head);
 	}
 };
 
