@@ -13,8 +13,8 @@ public:
 	{
 		bool result = true;
 
-		unordered_map<char, char> map_s;
-		unordered_map<char, char> map_t;
+		vector<int> map_s(256);
+		vector<int> map_t(256);
 
 		for (int i = 0; i < s.length(); i++)
 		{
