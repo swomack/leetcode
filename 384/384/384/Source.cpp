@@ -8,22 +8,12 @@ class Solution {
 public:
 
 	vector<int> stored;
-	vector<int> permute;
-
-	long long int call_possible;
-	long long int saved_call;
+	vector<int> permuted;
 
 	Solution(vector<int> nums) 
 	{
 		stored = nums;
-		permute = nums;
-
-		call_possible = 1;
-
-		for (long long int i = 2; i <= nums.size(); i++)
-			call_possible *= i;
-
-		saved_call = call_possible;
+		permuted = nums;
 	}
 
 	/** Resets the array to its original configuration and return it. */
@@ -35,18 +25,23 @@ public:
 	/** Returns a random shuffling of the array. */
 	vector<int> shuffle() 
 	{
-		call_possible--;
-
-		if (call_possible < 0)
+		// fisher-yates 
+	
+		for (int i = permuted.size() - 1; i >= 0; i--)
 		{
-			permute = stored;
-			call_possible = saved_call;
+			int rand_index = rand() % (i + 1);
+
+			swap(&permuted[i], &permuted[rand_index]);
 		}
-			
 
-		next_permutation(permute.begin(), permute.end());
+		return permuted;
+	}
 
-		return permute;
+	void swap(int *a, int *b)
+	{
+		int temp = *a;
+		*a = *b;
+		*b = temp;
 	}
 };
 
