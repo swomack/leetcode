@@ -1,4 +1,7 @@
 #include <iostream>
+#include <vector>
+
+using namespace std;
 
 
 struct ListNode
@@ -12,26 +15,53 @@ class Solution
 {
 public:
 
-	ListNode* fixed;
-	ListNode* running;
+	vector<int> data;
+	vector<int> back_up;
+
+	int i;
 
 	/** @param head The linked list's head.
 	Note that the head is guaranteed to be not null, so it contains at least one node. */
 	Solution(ListNode* head) 
 	{
-		fixed = running = head;
+		while (head)
+		{
+			data.push_back(head->val);
+			back_up.push_back(head->val);
+			head = head->next;
+		}
+
+		i = data.size() - 1;
 	}
 
 	/** Returns a random node's value. */
 	int getRandom() 
 	{
-		if (running == NULL)
-			running = fixed;
+		if (i < 0)
+		{
+			i = data.size() - 1;
 
-		int ret = running->val;
-		running = running->next;
+			for (int j = 0; j < data.size(); j++)
+				data[j] = back_up[j];
+		}
+			
+
+		int index = rand() % (i + 1);
+
+		int ret = data[index];
+		swap(&data[i], &data[index]);
+
+		i--;
 
 		return ret;
+		
+	}
+
+	void swap(int *a, int *b)
+	{
+		int temp = *a;
+		*a = *b;
+		*b = temp;
 	}
 };
 
