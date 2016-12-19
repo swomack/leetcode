@@ -17,21 +17,25 @@ public:
 		int row_middle = (row_start + row_end) / 2;
 		int index = col_start - 1;
 
-		for (int i = col_start; i <= col_end; i++)
+		int start = col_start;
+		int end = col_end;
+
+		while (start <= end)
 		{
-			if (matrix[row_middle][i] == target)
+			int col_middle = (start + end) / 2;
+
+			if (matrix[row_middle][col_middle] == target)
 				return true;
 
-			if (matrix[row_middle][i] < target)
+			if (matrix[row_middle][col_middle] < target)
 			{
-				index++;
-				continue;
+				index = col_middle;
+				start = col_middle + 1;
 			}
-
-
-			if (matrix[row_middle][i] > target)
-				break;
-
+			else
+			{
+				end = col_middle - 1;
+			}
 		}
 
 		return searchMatrixHelper(matrix, row_start, row_middle - 1, index + 1, col_end, target) || searchMatrixHelper(matrix, row_middle + 1, row_end, col_start, index, target);
