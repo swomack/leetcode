@@ -19,10 +19,15 @@ public:
 		return count;
 	}
 
+	int pop_count(int n)
+	{
+		return __builtin_popcount(n);
+	}
+
 	int hammingDistance(int x, int y) 
 	{
 		int exor = x ^ y;
-		return kernighan_number_of_one(exor);
+		return pop_count(exor);
 	}
 };
 
