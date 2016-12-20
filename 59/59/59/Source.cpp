@@ -8,21 +8,7 @@ class Solution
 {
 public:
 
-	void fillBottomLeftLayer(int row_start, int row_end, int col_start, int col_end, int numbering_start, vector<vector<int>>& result)
-	{
-		if (row_start > row_end || col_start > col_end)
-			return;
-
-		for (int i = col_end; i > col_start; i--)
-			result[row_end][i] = numbering_start++;
-
-		for (int i = row_end; i >= row_start; i--)
-			result[i][col_start] = numbering_start++;
-
-		fillTopRightLayer(row_start, row_end - 1, col_start + 1, col_end, numbering_start, result);
-	}
-
-	void fillTopRightLayer(int row_start, int row_end, int col_start, int col_end, int numbering_start, vector<vector<int>>& result)
+	void fillLayer(int row_start, int row_end, int col_start, int col_end, int numbering_start, vector<vector<int>>& result)
 	{
 		if (row_start > row_end || col_start > col_end)
 			return;
@@ -33,7 +19,20 @@ public:
 		for (int i = row_start; i <= row_end; i++)
 			result[i][col_end] = numbering_start++;
 
-		fillBottomLeftLayer(row_start + 1, row_end, col_start, col_end - 1, numbering_start, result);
+		if (row_start != row_end)
+		{
+			for (int i = col_end - 1; i > col_start; i--)
+				result[row_end][i] = numbering_start++;
+		}
+		
+		if (col_start != col_end)
+		{
+			for (int i = row_end; i > row_start; i--)
+				result[i][col_start] = numbering_start++;
+		}
+		
+
+		fillLayer(row_start + 1, row_end - 1, col_start + 1, col_end - 1, numbering_start, result);
 	}
 
 	vector<vector<int>> generateMatrix(int n) 
@@ -46,7 +45,7 @@ public:
 		if (n == 0)
 			return matrix;
 
-		fillTopRightLayer(0, n - 1, 0, n - 1, 1, matrix);
+		fillLayer(0, n - 1, 0, n - 1, 1, matrix);
 
 		return matrix;
 	}
