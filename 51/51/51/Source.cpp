@@ -9,36 +9,36 @@ class Solution
 {
 public:
 
-	bool is_safe(vector<string>& matrix, int N, vector<int>& rows)
+	bool is_safe(vector<string>& matrix, int N, vector<int>& inserted_columns_row_index)
 	{
-		if (rows.size() == 1)
+		int last_inserted_row = inserted_columns_row_index[inserted_columns_row_index.size() - 1];
+		int last_inserted_column = inserted_columns_row_index.size() - 1;
+
+		if (last_inserted_column == 0) // first column is always valid
 			return true;
 
-		for (int i = 1; i < rows.size(); i++)
+
+		for (int i = 0; i < last_inserted_column; i++)
 		{
-			for (int j = 0; j < i; j++)
-			{
-				if (rows[i] == rows[j])
+			// if same row, then not valid
+			if (inserted_columns_row_index[i] == last_inserted_row)
 					return false;
 
-				if (rows[i] + (j - i) == rows[j] || rows[i] + (i - j) == rows[j])
-					return false;
-			}
+			// if in the same angle, then not valid
+			if (inserted_columns_row_index[i] + (last_inserted_column - i) == last_inserted_row || inserted_columns_row_index[i] + (i - last_inserted_column) == last_inserted_row)
+				return false;
 		}
 
 		return true;
 	}
 
 
-	void NQueen(vector<string>& matrix, int column, int N, vector<vector<string>>& solutions, vector<int>& rows)
+	void NQueen(vector<string>& matrix, int column, int N, vector<vector<string>>& solutions, vector<int>& inserted_columns_row_index)
 	{
 		if (N < 4 && N > 1)
 			return;
 
-		if (column > N)
-			return;
-
-		else if (column == N)
+		if (column == N)
 		{
 			solutions.push_back(matrix);
 			return;
@@ -47,13 +47,13 @@ public:
 		for (int i = 0; i < N; i++)
 		{
 			matrix[i][column] = 'Q';
-			rows.push_back(i);
+			inserted_columns_row_index.push_back(i);
 
-			if (is_safe(matrix, N, rows))
-				NQueen(matrix, column + 1, N, solutions, rows);
+			if (is_safe(matrix, N, inserted_columns_row_index))
+				NQueen(matrix, column + 1, N, solutions, inserted_columns_row_index);
 
 			matrix[i][column] = '.';
-			rows.pop_back();
+			inserted_columns_row_index.pop_back();
 		}
 	}
 
@@ -73,10 +73,8 @@ public:
 			matrix.push_back(s);
 		}
 
-		vector<int> rows;
-		NQueen(matrix, 0, n, solutions, rows);
-
-
+		vector<int> inserted_columns_row_index;
+		NQueen(matrix, 0, n, solutions, inserted_columns_row_index);
 
 		return solutions;
 	}
