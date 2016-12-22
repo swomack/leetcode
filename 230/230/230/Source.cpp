@@ -7,34 +7,37 @@ using namespace std;
 struct TreeNode
 {
 	int val;
+	int total_left_element;
 	TreeNode *left;
 	TreeNode *right;
-	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode(int x) : val(x), total_left_element(0), left(NULL), right(NULL) {}
+
+	void insertLeft(int value)
+	{
+		this->left = new TreeNode(value);
+		total_left_element++;
+	}
+
+	void insertRight(int value)
+	{
+		this->right = new TreeNode(value);
+	}
 };
 
 class Solution 
 {
 public:
 
-	int inOrder(TreeNode* root, int& k)
-	{
-		if (root == NULL)
-			return -1;
-		
-		int val = inOrder(root->left, k);
-		if (!k)
-			return val;
-
-		k--;
-		if (!k)
-			return root->val;
-		
-		return inOrder(root->right, k);
-	}
 
 	int kthSmallest(TreeNode* root, int k) 
 	{
-		return inOrder(root, k);
+		if (root->total_left_element == k - 1)
+			return root->val;
+
+		if (root->total_left_element > k - 1)
+			return kthSmallest(root->left, k);
+		else
+			return kthSmallest(root->right, k - root->total_left_element + 1);
 	}
 };
 
