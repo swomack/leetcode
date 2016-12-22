@@ -13,32 +13,23 @@ public:
 			return 0;
 		sort(points.begin(), points.end());
 
-		vector<pair<int, int>> in_queue;
-		in_queue.push_back(points[0]);
+	
+		
 		int count = 1;
+		int min_boundary = points[0].second;
 
 		for (int i = 1; i < points.size(); i++)
 		{
 			pair<int, int> current = points[i];
 
-			bool insert = true;
-
-			for (int j = 0; j < in_queue.size(); j++)
-			{
-				if (in_queue[j].second >= current.first)
-					continue;
-
-				insert = false;
-				break;
-			}
-
-			if (insert)
-				in_queue.push_back(current);
-			else
+			if (current.first > min_boundary)
 			{
 				count++;
-				in_queue.clear();
-				in_queue.push_back(current);
+				min_boundary = current.second;
+			}
+			else
+			{
+				min_boundary = min(min_boundary, current.second);
 			}
 		}
 
