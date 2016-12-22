@@ -9,7 +9,7 @@ class Solution
 {
 public:
 
-	bool is_safe(vector<string>& matrix, int N, vector<int>& inserted_columns_row_index)
+	bool is_safe(int N, vector<int>& inserted_columns_row_index)
 	{
 		int last_inserted_row = inserted_columns_row_index[inserted_columns_row_index.size() - 1];
 		int last_inserted_column = inserted_columns_row_index.size() - 1;
@@ -49,7 +49,7 @@ public:
 			matrix[i][column] = 'Q';
 			inserted_columns_row_index.push_back(i);
 
-			if (is_safe(matrix, N, inserted_columns_row_index))
+			if (is_safe(N, inserted_columns_row_index))
 				NQueen(matrix, column + 1, N, solutions, inserted_columns_row_index);
 
 			matrix[i][column] = '.';
