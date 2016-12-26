@@ -16,29 +16,24 @@ public:
 	{
 		ListNode* temp = head;
 		
-		stack<ListNode*> nodes;
-
-		while (temp)
+		while (n--)
 		{
-			nodes.push(temp);
 			temp = temp->next;
 		}
 
+		if (temp == NULL)
+			return head->next;
 
-		while (n--)
+		temp = temp->next;
+		ListNode* temp2 = head;
+
+		while (temp)
 		{
-			nodes.pop();
+			temp = temp->next;
+			temp2 = temp2->next;
 		}
 
-		ListNode* prev = NULL;
-		
-		if(!nodes.empty())
-			prev = nodes.top();
-
-		if (prev == NULL)
-			head = head->next;
-		else if (prev != NULL)
-			prev->next = prev->next->next;
+		temp2->next = temp2->next->next;
 
 		return head;
 	}
