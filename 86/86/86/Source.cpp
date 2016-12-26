@@ -20,33 +20,44 @@ public:
 		
 
 		if (walk->val < x)
+		{
+			while (walk->next && walk->next->val < x)
+			{
+				walk = walk->next;
+			}
+
+			if (walk->next == NULL)
+				return head;
+
 			lesser = walk;
+		}
+		else
+		{
+			while (walk->next && walk->next->val >= x)
+			{
+				walk = walk->next;
+			}
+
+			if (walk->next == NULL)
+				return head;
+
+			ListNode* temp = walk->next;
+			walk->next = temp->next;
+			temp->next = head;
+			head = temp;
+			lesser = head;
+		}
+		
 
 		while (walk->next)
 		{
 			if (walk->next->val < x)
 			{
-				if (lesser == walk)
-				{
-					walk = walk->next;
-					lesser = lesser->next;
-				}
-				else if (lesser == NULL)
-				{
-					ListNode* temp = walk->next;
-					walk->next = temp->next;
-					temp->next = head;
-					head = temp;
-					lesser = head;
-				}
-				else
-				{
-					ListNode* temp = walk->next;
-					walk->next = temp->next;
-					temp->next = lesser->next;
-					lesser->next = temp;
-					lesser = lesser->next;
-				}
+				ListNode* temp = walk->next;
+				walk->next = temp->next;
+				temp->next = lesser->next;
+				lesser->next = temp;
+				lesser = lesser->next;
 			}
 			else
 			{
