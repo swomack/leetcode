@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -11,32 +12,33 @@ struct ListNode
 
 class Solution {
 public:
-
-	ListNode* removingNode(ListNode* node, int& n)
-	{
-		if (node->next == NULL)
-			return NULL;
-
-		ListNode* ret = removingNode(node->next, n);
-
-		n--;
-
-		if (n == 0)
-			return node;
-
-		return ret;
-
-	}
-
 	ListNode* removeNthFromEnd(ListNode* head, int n) 
 	{
 		ListNode* temp = head;
-		ListNode* rem = removingNode(temp, n);
+		
+		stack<ListNode*> nodes;
 
-		if (rem == NULL)
+		while (temp)
+		{
+			nodes.push(temp);
+			temp = temp->next;
+		}
+
+
+		while (n--)
+		{
+			nodes.pop();
+		}
+
+		ListNode* prev = NULL;
+		
+		if(!nodes.empty())
+			prev = nodes.top();
+
+		if (prev == NULL)
 			head = head->next;
-		else
-			rem->next = rem->next->next;
+		else if (prev != NULL)
+			prev->next = prev->next->next;
 
 		return head;
 	}
