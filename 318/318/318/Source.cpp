@@ -10,43 +10,26 @@ public:
 	int maxProduct(vector<string>& words) 
 	{
 		int max_product = 0;
-
 		int words_length = words.size();
-		vector<vector<int>> maps(words_length);
+
+		vector<int> value_map(words_length);
 
 		for (int i = 0; i < words_length; i++)
 		{
-			maps[i].resize(26);
-
-			int word_length = words[i].length();
-
+			string word = words[i];
+			int word_length = word.length();
 			for (int j = 0; j < word_length; j++)
-			{
-				maps[i][words[i][j] - 97]++;
-			}
+				value_map[i] |= (1 << (word[j] - 'a'));
 		}
 
 		for (int i = 0; i < words_length - 1; i++)
 		{
-			string word1 = words[i];
 			for (int j = i + 1; j < words_length; j++)
 			{
-				string word2 = words[j];
-
 				// check distinct
-				bool distinct = true;
-				for (int k = 0; k < word2.length(); k++)
+				if (!(value_map[i] & value_map[j]))
 				{
-					if (maps[i][word2[k] - 97])
-					{
-						distinct = false;
-						break;
-					}
-				}
-
-				if (distinct)
-				{
-					int product_length = word1.length() * word2.length();
+					int product_length = words[i].length() * words[j].length();
 					max_product = max(max_product, product_length);
 				}
 			}
