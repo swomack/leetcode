@@ -6,34 +6,12 @@ using namespace std;
 
 class Solution {
 public:
-
-	bool isValid(string& parenthesis)
+	void backtrack(string& parenthesis, int open, int close, vector<string>& result)
 	{
-		int count = 0;
-
-		for (int i = 0; i < parenthesis.length(); i++)
-		{
-			if (parenthesis[i] == '(')
-				count++;
-			else
-				count--;
-
-			if (count < 0)
-				return false;
-		}
-
-		return true;
-	}
-
-	void backtrack(string& parenthesis, int n, vector<string>& result, int open)
-	{
-		if (n == 1)
+		if (open == 0 && close == 1)
 		{
 			parenthesis.push_back(')');
-
-			if (isValid(parenthesis))
-				result.push_back(parenthesis);
-
+			result.push_back(parenthesis);
 			parenthesis.pop_back();
 			return;
 		}
@@ -41,17 +19,17 @@ public:
 		if (open)
 		{
 			parenthesis.push_back('(');
-			backtrack(parenthesis, n - 1, result, open - 1);
+			backtrack(parenthesis, open - 1, close, result);
 			parenthesis.pop_back();
 		}
 		
 
-		parenthesis.push_back(')');
-
-		if (isValid(parenthesis))
-			backtrack(parenthesis, n - 1, result, open);
-		
-		parenthesis.pop_back();
+		if (close > open)
+		{
+			parenthesis.push_back(')');
+			backtrack(parenthesis, open, close - 1, result);
+			parenthesis.pop_back();
+		}
 	}
 
 	vector<string> generateParenthesis(int n) 
@@ -64,7 +42,7 @@ public:
 		string parenthesis;
 		parenthesis.push_back('(');
 
-		backtrack(parenthesis, 2 * n - 1, result, n - 1);
+		backtrack(parenthesis, n - 1, n, result);
 
 		return result;
 	}
