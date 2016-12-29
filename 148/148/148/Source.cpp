@@ -12,90 +12,88 @@ class Solution
 {
 public:
 	int length;
-	ListNode* list_head;
+	
 	ListNode* sortList(ListNode* head) 
 	{
-		if (head == NULL || head->next == NULL)
-			return head;
-
-		list_head = head;
-		ListNode* temp = head;
-		length = 0;
-		while (temp->next)
-		{
-			length++;
-			temp = temp->next;
-		}
-
-		quickSort(head, temp, 0, length);
-
-		return list_head;
+		return mergeSort(head);
 	}
 
-	void quickSort(ListNode* start, ListNode* end, int start_index, int end_index)
+
+	ListNode* mergeSort(ListNode* a)
 	{
-		if (start_index >= end_index)
-			return;
+		if (a == NULL || a->next == NULL)
+			return a;
 
-		int pivot_offset = floor(rand() % (end_index - start_index + 1));
-		pivot_offset = partition(start, end, pivot_offset);
+		
+		ListNode* mid_node = getMid(a);
 
-		if (pivot_offset == 0)
+		ListNode* b = mid_node->next;
+		mid_node->next = NULL;
+
+		a = mergeSort(a);
+		b = mergeSort(b);
+
+		ListNode* head = merge(a, b);
+		return head;
+	}
+
+	ListNode* getMid(ListNode* a)
+	{
+		ListNode* slow = a;
+		ListNode* fast = a;
+		while (fast && fast->next && fast->next->next)
 		{
-			quickSort(start->next, end, start_index + 1, end_index);
+			fast = fast->next->next;
+			slow = slow->next;
 		}
-		else
+		
+		return slow;
+	}
+
+	ListNode* merge(ListNode* a, ListNode* b)
+	{
+		ListNode *head = new ListNode(-1);
+
+		ListNode* run = head;
+
+		while (a && b)
 		{
-			ListNode* pivot = start;
-			int midpoint = pivot_offset;
-			while (pivot_offset - 1)
+			if (a->val < b->val)
 			{
-				pivot_offset--;
-				pivot = pivot->next;
+				run->next = a;
+				a = a->next;
+			}
+			else
+			{
+				run->next = b;
+				b = b->next;
 			}
 
-			quickSort(start, pivot, start_index, start_index + midpoint - 1);
-
-			if(start_index + midpoint + 1 <= end_index)
-				quickSort(pivot->next->next, end, start_index + midpoint + 1, end_index);
-		}
-	}
-
-	int partition(ListNode* start, ListNode* end, int pivot_index)
-	{
-		ListNode* pivot_node = start;
-		while (pivot_index--)
-		{
-			pivot_node = pivot_node->next;
+			run = run->next;
 		}
 
-		swap(end, pivot_node);
-
-		ListNode* temp = start;
-
-		int less_equal = 0;
-		while(temp != end)
+		if (a)
 		{
-			if (temp->val <= end->val)
+			while (a)
 			{
-				swap(start, temp);
-				start = start->next;
-				less_equal++;
+				run->next = a;
+				run = run->next;
+				a = a->next;
 			}
-
-			temp = temp->next;
 		}
 
-		swap(start, end);
+		if (b)
+		{
+			while (b)
+			{
+				run->next = b;
+				run = run->next;
+				b = b->next;
+			}
+		}
 
-		return less_equal;
-	}
-
-	void swap(ListNode* a, ListNode* b)
-	{
-		int temp = a->val;
-		a->val = b->val;
-		b->val = temp;
+		run->next = NULL;
+		return head->next;
 	}
 };
 
