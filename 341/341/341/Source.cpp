@@ -44,137 +44,43 @@ public:
 class NestedIterator {
 public:
 
-	vector<NestedInteger> nested_list;
-	stack<NestedInteger> current_lists;
-	stack<int> current_indices;
-	int nested_list_index;
+	vector<int> modified_list;
+	int index;
 
-	int next_value;
+	NestedIterator(vector<NestedInteger> &nestedList) 
+	{
+		index = 0;
+		modified_list.clear();
 
-	NestedIterator(vector<NestedInteger> &nestedList) {
-		nested_list = nestedList;
-		nested_list_index = 0;
+		fillList(nestedList, modified_list);
 	}
 
-	bool isEmptyList(NestedInteger& nest)
+	void fillList(vector<NestedInteger>& inpList, vector<int>& outList)
 	{
-		if (nest.isInteger())
-			return false;
-
-		for (int i = 0; i < nest.getList().size(); i++)
+		for (int i = 0; i < inpList.size(); i++)
 		{
-			if (!isEmptyList(nest.getList()[i]))
-				return false;
-		}
-
-		return true;
-	}
-
-	bool findInStack()
-	{
-		while (!current_lists.empty())
-		{
-			NestedInteger top_list = current_lists.top();
-			int top_index = current_indices.top();
-
-			while (top_index < top_list.getList().size() && isEmptyList(top_list.getList()[top_index]))
-				top_index++;
-
-			if (top_index >= top_list.getList().size())
+			if (inpList[i].isInteger())
 			{
-				current_lists.pop();
-				current_indices.pop();
-				continue;
+				outList.push_back(inpList[i].getInteger());
 			}
-		
-
-			if (top_list.getList()[top_index].isInteger())
+			else
 			{
-				next_value = top_list.getList()[top_index].getInteger();
-				current_indices.pop();
-				current_indices.push(top_index + 1);
-				return true;
+				fillList(inpList[i].getList(), outList);
 			}
-
-			current_lists.push(top_list.getList()[top_index]);
-			current_indices.pop();
-			current_indices.push(top_index + 1);
-			current_indices.push(0);
 		}
-
-		return false;
-	}
-
-
-	bool buildStackMain()
-	{
-		while (nested_list_index < nested_list.size() && isEmptyList(nested_list[nested_list_index]))
-			nested_list_index++;
-
-		if (nested_list_index >= nested_list.size())
-			return false;
-
-
-		if (nested_list[nested_list_index].isInteger())
-		{
-			next_value = nested_list[nested_list_index].getInteger();
-			nested_list_index++;
-			return true;
-		}
-
-		current_lists.push(nested_list[nested_list_index]);
-		current_indices.push(0);
-		nested_list_index++;
-
-
-		return buildStack();
-	}
-
-	bool buildStack()
-	{
-		int index = current_indices.top();
-		vector<NestedInteger>& list = current_lists.top().getList();
-		while (index < list.size() && isEmptyList(list[index]))
-			index++;
-
-		if (index >= list.size())
-		{
-			return false;
-		}
-			
-
-
-		if (list[index].isInteger())
-		{
-			next_value = list[index].getInteger();
-			index++;
-			current_indices.pop();
-			current_indices.push(index);
-			return true;
-		}
-
-		
-		current_lists.push(list[index]);
-
-		index++;
-		current_indices.pop();
-		current_indices.push(index);
-
-		current_indices.push(0);
-
-		
-
-		return buildStack();
 	}
 
 	bool hasNext() 
 	{
-		return findInStack() || buildStackMain();
+		if (index < modified_list.size())
+			return true;
+
+		return false;
 	}
 
 	int next() 
 	{
-		return next_value;
+		return modified_list[index++];
 	}
 };
 
