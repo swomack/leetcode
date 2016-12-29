@@ -9,10 +9,18 @@ public:
 	NestedInteger(int val)
 	{
 		integer = val;
+		is_Integer = true;
 	}
+
+	NestedInteger(vector<NestedInteger>& list)
+	{
+		nested_list = list;
+		is_Integer = false;
+	}
+
 	bool isInteger()
 	{
-		return true;
+		return is_Integer;
 	} 
 	
 	int getInteger()
@@ -20,15 +28,16 @@ public:
 		return integer;
 	}
 
-     
+	
+
 	vector<NestedInteger> &getList()
 	{
-		return list;
+		return nested_list;
 	}
 
 public:
 	bool is_Integer;
-	vector<NestedInteger> list;
+	vector<NestedInteger> nested_list;
 	int integer;
  };
 
@@ -54,7 +63,7 @@ public:
 
 		for (int i = 0; i < nest.getList().size(); i++)
 		{
-			if (isEmptyList(nest.getList()[i]))
+			if (!isEmptyList(nest.getList()[i]))
 				return false;
 		}
 
@@ -90,6 +99,7 @@ public:
 			current_lists.push(top_list.getList()[top_index]);
 			current_indices.pop();
 			current_indices.push(top_index + 1);
+			current_indices.push(0);
 		}
 
 		return false;
@@ -112,34 +122,49 @@ public:
 			return true;
 		}
 
-		int new_index = 0;
 		current_lists.push(nested_list[nested_list_index]);
-		current_indices.push(new_index);
+		current_indices.push(0);
+		nested_list_index++;
 
 
-		return buildStack(new_index, nested_list[nested_list_index++].getList());
+		return buildStack();
 	}
 
-	bool buildStack(int index, vector<NestedInteger>& list)
+	bool buildStack()
 	{
+		int index = current_indices.top();
+		vector<NestedInteger>& list = current_lists.top().getList();
 		while (index < list.size() && isEmptyList(list[index]))
 			index++;
 
 		if (index >= list.size())
+		{
 			return false;
+		}
+			
 
 
 		if (list[index].isInteger())
 		{
 			next_value = list[index].getInteger();
+			index++;
+			current_indices.pop();
+			current_indices.push(index);
 			return true;
 		}
 
-		int new_index = 0;
+		
 		current_lists.push(list[index]);
-		current_indices.push(new_index);
 
-		return buildStack(new_index, list[index].getList());
+		index++;
+		current_indices.pop();
+		current_indices.push(index);
+
+		current_indices.push(0);
+
+		
+
+		return buildStack();
 	}
 
 	bool hasNext() 
@@ -163,11 +188,20 @@ int main()
 {
 	
 
-	NestedInteger a(1);
-	NestedInteger b(2);
-	NestedInteger c(3);
+	NestedInteger a(8);
+	NestedInteger b(4);
+	//NestedInteger c(6);
 
-	vector<NestedInteger> param{a,b,c};
+	vector<NestedInteger> p1{ a };
+	NestedInteger d(p1);
+
+	vector<NestedInteger> p2{ d, b };
+	NestedInteger e(p2);
+
+	/*vector<NestedInteger> p3{ a,p2 };
+	NestedInteger f(p3);*/
+	
+	vector<NestedInteger> param{ e };
 
 	NestedIterator it(param);
 
