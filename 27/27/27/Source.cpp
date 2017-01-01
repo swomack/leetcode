@@ -8,24 +8,18 @@ class Solution
 public:
 	int removeElement(vector<int>& nums, int val) 
 	{
-		int valid_index = nums.size() - 1;
+		int valid = -1;
 
-		int running_index = 0;
-
-		while (running_index <= valid_index)
+		for (int i = 0; i < nums.size(); i++)
 		{
-			if (nums[running_index] != val)
+			if (nums[i] != val)
 			{
-				running_index++;
-				continue;
+				valid++;
+				nums[valid] = nums[i];
 			}
-
-			nums[running_index] = nums[valid_index];
-			nums[valid_index] = val;
-			valid_index--;
 		}
 
-		return valid_index + 1;
+		return valid + 1;
 	}
 };
 
