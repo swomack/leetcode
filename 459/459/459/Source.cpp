@@ -7,39 +7,44 @@ using namespace std;
 class Solution 
 {
 public:
-	bool repeatedSubstringPattern(string str) {
+	bool repeatedSubstringPattern(string str) 
+	{
 		if (str.length() <= 1)
 			return false;
 
-		int pattern_index = 0;
-		int run = 1;
-		bool ret = true;
-		while (run < str.length())
+		string pattern;
+	
+		for (int i = 0; i < str.length() / 2; i++)
 		{
-			int start = run;
-			for (int i = 0; run - start <= pattern_index; run++, i++)
-			{
-				if (str[run] == str[i])
-				{
-					ret = true;
-					continue;
-				}
-					
+			pattern.push_back(str[i]);
 
-				pattern_index = start;
-				run = pattern_index + 1;
-				ret = false;
-				break;
-			}
+			if (patternCheck(str, pattern))
+				return true;
 		}
-		
-		return ret;
+
+		return false;
+	}
+
+	bool patternCheck(string& str, string& pattern)
+	{
+		if (str.length() % pattern.length())
+			return false;
+
+		for (int i = 0; i < str.length(); i += pattern.length())
+		{
+			string substr = str.substr(i, pattern.length());
+
+			if (substr != pattern)
+				return false;
+		}
+
+		return true;
 	}
 };
 
 int main()
 {
 	Solution s;
-	bool res = s.repeatedSubstringPattern("abacababacab");
+	bool res = s.repeatedSubstringPattern("abaababaab");
 	return 0;
 }
