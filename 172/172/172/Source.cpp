@@ -12,21 +12,31 @@ public:
 		int twos = 0;
 		int fives = 0;
 
-		for (int i = 2; i <= n; i++)
+	
+		long num = (long)n;
+		long divTwo = 2;
+		while (true)
 		{
-			int num = i;
+			long add = floor(num / divTwo);
 
-			while (num && num % 2 == 0)
-			{
-				twos++;
-				num /= 2;
-			}
+			if (add == 0)
+				break;
 
-			while (num && num % 5 == 0)
-			{
-				fives++;
-				num /= 5;
-			}
+			twos += add;
+			divTwo *= 2;
+		}
+
+		num = n;
+		long divFive = 5;
+		while (true)
+		{
+			int add = floor(num / divFive);
+
+			if (add == 0)
+				break;
+
+			fives += add;
+			divFive *= 5;
 		}
 
 		return min(twos, fives);
@@ -36,5 +46,6 @@ public:
 int main()
 {
 	Solution s;
+	int res = s.trailingZeroes(1808548329);
 	return 0;
 }
