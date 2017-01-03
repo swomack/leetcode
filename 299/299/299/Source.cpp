@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -11,23 +13,25 @@ public:
 	{
 		int b = 0;
 		int c = 0;
-		vector<int> count;
-		for (int i = 0; i < secret.length(); i++)
+		vector<int> count_s(10);
+		vector<int> count_g(10);
+		int length = secret.length();
+		for (int i = 0; i < length; i++)
 		{
 			if (secret[i] == guess[i])
 				b++;
 			else
-				count[secret[i]]++;
+			{
+				count_s[secret[i] - '0']++;
+				count_g[guess[i] - '0']++;
+			}
+				
 		}
 			
 	
-		for (int i = 0; i < guess.length(); i++)
+		for (int i = 0; i < 10; i++)
 		{
-			if (count[guess[i]] == 0 || guess[i] == secret[i])
-				continue;
-
-			c++;
-			count[guess[i]]--;
+			c += min(count_s[i], count_g[i]);
 		}
 
 		return to_string(b) + "A" + to_string(c) + "B";
