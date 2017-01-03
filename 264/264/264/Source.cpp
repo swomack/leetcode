@@ -2,6 +2,7 @@
 #include <queue>
 #include <vector>
 #include <functional>
+#include <set>
 
 using namespace std;
 
@@ -10,27 +11,22 @@ class Solution
 public:
 	int nthUglyNumber(int n) 
 	{
-		priority_queue<long, vector<long>, greater<long>> queue;
-		queue.push(1);
-		long last_element = -1;
-		while (true)
+		set<long> ugly;
+		std::set<long>::iterator it;
+		
+		ugly.insert(1);
+		while (--n)
 		{
-			long top = queue.top();
-			queue.pop();
-			if (last_element == top)
-				continue;
-			last_element = top;
-			n--;
+			it = ugly.begin();
+			long top = (*it);
+			ugly.erase(it);
 
-			if (n == 0)
-				break;
-
-			queue.push(2 * top);
-			queue.push(3 * top);
-			queue.push(5 * top);
+			ugly.insert(2 * top);
+			ugly.insert(3 * top);
+			ugly.insert(5 * top);
 		}
 
-		return last_element;
+		return *(ugly.begin());
 	}
 };
 
