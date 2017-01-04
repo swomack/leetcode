@@ -13,17 +13,23 @@ public:
 			return;
 
 		int add = k % size;
-		int pos = 0;
-		int loop = size;
-		int num = nums[0];
-		while (loop--)
+		
+
+		for (int i = 0; i < add; i++)
 		{
-			int new_pos = (pos + add) % size;
-			int temp = nums[new_pos];
-			nums[new_pos] = num;
-			num = temp;
-			pos = new_pos;
+			int pos = i;
+			int num = nums[pos];
+
+			while (pos < size)
+			{
+				int new_pos = pos + add;
+				int temp = nums[new_pos % size];
+				nums[new_pos % size] = num;
+				num = temp;
+				pos = new_pos;
+			}
 		}
+		
 	}
 };
 
