@@ -12,17 +12,43 @@ public:
 
 		string res;
 		int carry = 0;
-		while (la-- && lb--)
+		while (la && lb)
 		{
+			la--;
+			lb--;
 			int digit = (a[la] - '0') ^ (b[lb] - '0') ^ carry;
 			res.push_back('0' + digit);
 			carry = (((a[la] - '0') || (b[lb] - '0')) & carry) || ((a[la] - '0') && (b[lb] - '0'));
 		}
+
+		while (la)
+		{
+			la--;
+			int digit = (a[la] - '0') ^ carry;
+			res.push_back('0' + digit);
+			carry = (a[la] - '0') && carry;
+		}
+
+		while (lb)
+		{
+			lb--;
+			int digit = (b[lb] - '0') ^ carry;
+			res.push_back('0' + digit);
+			carry = (b[lb] - '0') && carry;
+		}
+
+		if (carry)
+			res.push_back('1');
+
+		reverse(res.rbegin(), res.rend());
+
+		return res;
 	}
 };
 
 int main()
 {
 	Solution s;
+	string res = s.addBinary("0", "0");
 	return 0;
 }
