@@ -11,15 +11,16 @@ public:
 		if (n == 0)
 			return 0;
 
-		bitset<32> bits(n);
+		unsigned int mask = 1;
 		unsigned int res = 0;
 		for (int i = 0; i < 31; i++)
 		{
-			res |= bits[i];
+			res |= ((mask & n) >> i);
 			res <<= 1;
+			mask <<= 1;
 		}
 
-		res |= bits[31];
+		res |= ((mask & n) >> 31);
 
 		return res;
 	}
@@ -28,6 +29,6 @@ public:
 int main()
 {
 	Solution s;
-	int res = s.reverseBits(0);
+	int res = s.reverseBits(2147483648);
 	return 0;
 }
