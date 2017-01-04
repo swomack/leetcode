@@ -1,11 +1,12 @@
 #include <iostream>
-#include <stack>
+#include <vector>
+
 
 using namespace std;
 
 class MinStack {
-	stack<int> actual;
-	stack<int>min_stack;
+	vector<int> actual;
+	vector<int>min_stack;
 public:
 	/** initialize your data structure here. */
 	MinStack() {
@@ -13,27 +14,25 @@ public:
 	}
 
 	void push(int x) {
-		actual.push(x);
+		actual.push_back(x);
 
-		if (min_stack.empty() || min_stack.top() >= x)
-			min_stack.push(x);
+		if (min_stack.empty() || min_stack[min_stack.size() - 1] >= x)
+			min_stack.push_back(x);
 	}
 
 	void pop() {
+		if (!min_stack.empty() && min_stack[min_stack.size() - 1] == actual[actual.size() - 1])
+			min_stack.pop_back();
 
-		int rem = actual.top();
-		actual.pop();
-
-		if (!min_stack.empty() && min_stack.top() == rem)
-			min_stack.pop();
+		actual.pop_back();
 	}
 
 	int top() {
-		return actual.top();
+		return actual[actual.size() - 1];
 	}
 
 	int getMin() {
-		return min_stack.top();
+		return min_stack[min_stack.size() - 1];
 	}
 };
 
