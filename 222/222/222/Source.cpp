@@ -79,7 +79,6 @@ public:
 		int RightTreeCount = countNodesRight(root->right, rightLength - 1);
 
 		return leftTreeCount + RightTreeCount + 1;
-
 	}
 };
 
