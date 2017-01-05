@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -15,20 +16,19 @@ public:
 		int add = k % size;
 		
 
+		nums.resize(size + add);
+
+		for (int i = size - 1; i >= 0; i--)
+		{
+			nums[i + add] = nums[i];
+		}
+
 		for (int i = 0; i < add; i++)
 		{
-			int pos = i;
-			int num = nums[pos];
-
-			while (pos < size)
-			{
-				int new_pos = pos + add;
-				int temp = nums[new_pos % size];
-				nums[new_pos % size] = num;
-				num = temp;
-				pos = new_pos;
-			}
+			nums[i] = nums[size + i];
 		}
+
+		nums.resize(size);
 		
 	}
 };
@@ -36,5 +36,7 @@ public:
 int main()
 {
 	Solution s;
+	vector<int> param{ 1,2};
+	s.rotate(param, 3);
 	return 0;
 }
