@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -14,17 +15,37 @@ class Solution
 {
 public:
 
-	TreeNode* 
+	int getLeftLength(TreeNode* node) 
+	{
+		if (node == NULL)
+			return 0;
+
+		return 1 + getLeftLength(node->left);
+	}
+
+
+	int getRightLength(TreeNode* node)
+	{
+		if (node == NULL)
+			return 0;
+
+		return 1 + getRightLength(node->right);
+	}
 
 	int countNodes(TreeNode* root) 
 	{
 		if (root == NULL)
 			return 0;
+		int leftLength = getLeftLength(root->left);
+		int rightLength = getRightLength(root->right);
 
-		while (true)
-		{
+		if (leftLength == rightLength)
+			return pow(2, leftLength + 1) - 1;
 
-		}
+		int leftTreeCount = countNodes(root->left);
+		int RightTreeCount = countNodes(root->right);
+
+		return leftTreeCount + RightTreeCount + 1;
 
 	}
 };
