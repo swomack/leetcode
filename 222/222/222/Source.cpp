@@ -40,7 +40,7 @@ public:
 		int rightLength = getRightLength(root->right);
 
 		if (leftLength == rightLength)
-			return pow(2, leftLength + 1) - 1;
+			return (1 << (leftLength + 1)) - 1;
 
 		int leftTreeCount = countNodesLeft(root->left, leftLength - 1);
 		int RightTreeCount = countNodesRight(root->right, rightLength - 1);
@@ -56,7 +56,7 @@ public:
 		int leftLength = getLeftLength(root->left);
 
 		if (leftLength == rightLength)
-			return pow(2, leftLength + 1) - 1;
+			return (1 << (leftLength + 1)) - 1;
 
 		int leftTreeCount = countNodesLeft(root->left, leftLength - 1);
 		int RightTreeCount = countNodesRight(root->right, rightLength - 1);
@@ -73,7 +73,7 @@ public:
 		int rightLength = getRightLength(root->right);
 
 		if (leftLength == rightLength)
-			return pow(2, leftLength + 1) - 1;
+			return (1 << (leftLength+1)) - 1;
 
 		int leftTreeCount = countNodesLeft(root->left, leftLength - 1);
 		int RightTreeCount = countNodesRight(root->right, rightLength - 1);
