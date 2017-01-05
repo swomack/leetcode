@@ -10,62 +10,68 @@ public:
 	string trim(string& str, char trim)
 	{
 		size_t first = str.find_first_not_of(trim);
+
+		if(first == string::npos)
+			return str.substr(0, 0);
+
 		size_t last = str.find_last_not_of(trim);
 
 		return str.substr(first, last - first + 1);
 	}
 
-	string trimFirst(string& str, char trim)
-	{
-		size_t first = str.find_first_not_of(trim);
-
-		if (first == string::npos)
-			return str.substr(0, 0);
-
-		return str.substr(first);
-	}
-
-	string trimLast(string& str, char trim)
-	{
-		size_t last = str.find(trim);
-
-
-		return str.substr(0, last);
-	}
-
-	long convert(string& s)
-	{
-		long num = 0;
-
-		for (int i = 0; i < s.size(); i++)
-		{
-			num *= 10;
-			num += s[i] - '0';
-		}
-
-		return num;
-	}
 
 	int myAtoi(string str) 
 	{
-		string s = trimFirst(str, '-');
+		if (str.length() <= 0)
+			return 0;
 
-		int mult = 1;
-		if (str.length() != s.length())
+		int ind = 0;
+
+		while (ind < str.length() && str[ind] == ' ')
+			ind++;
+
+		if (ind >= str.length())
+			return 0;
+	
+		long res = 0;
+		long mult = 1;
+		if (str[ind] == '-')
+		{
 			mult = -1;
+			ind++;
+		}
+		else if (str[ind] == '+')
+		{
+			ind++;
+		}
+			
+		
+		for (; ind < str.length(); ind++)
+		{
+			if (str[ind] >= '0' && str[ind] <= '9')
+			{
+				res *= 10;
+				res += long(str[ind] - '0');
 
-		s = trimFirst(s, '+');
+				if (res * mult > INT_MAX)
+					return INT_MAX;
 
-		s = trimFirst(s, '0');
-		s = trimLast(s, '.');
+				if (res * mult < INT_MIN)
+					return INT_MIN;
 
-		return mult * convert(s);
+				continue;
+			}
+				
+			break;
+		}
+
+		return res * mult;
 	}
 };
 
 int main()
 {
 	Solution s;
-	int val = s.myAtoi("0");
+	int val = s.myAtoi("9223372036854775809");
 	return 0;
 }
