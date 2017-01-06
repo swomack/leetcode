@@ -14,28 +14,30 @@ struct TreeNode
 class Solution 
 {
 public:
-	void leafSum(TreeNode* node, string& path, int& sum)
+	void leafSum(TreeNode* node, int& path, int& sum)
 	{
 		if (node == NULL)
 			return;
 
 		if (node->left == NULL && node->right == NULL)
 		{
-			path.push_back('0' + node->val);
-			sum += stoi(path);
-			path.pop_back();
+			path *= 10;
+			path += node->val;
+			sum += path;
+			path /= 10;
 			return;
 		}
 
-		path.push_back('0' + node->val);
+		path *= 10;
+		path += node->val;
 		leafSum(node->left, path, sum);
 		leafSum(node->right, path, sum);
-		path.pop_back();
+		path /= 10;
 	}
 
 	int sumNumbers(TreeNode* root) 
 	{
-		string path;
+		int path = 0;
 		int result = 0;
 		leafSum(root, path, result);
 		return result;
