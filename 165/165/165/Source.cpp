@@ -43,6 +43,11 @@ public:
 		vector<int> v1 = build_version(version1);
 		vector<int> v2 = build_version(version2);
 
+		if (v1.size() > v2.size())
+			v2.resize(v1.size());
+		else
+			v1.resize(v2.size());
+
 		int index1 = 0;
 		int index2 = 0;
 
@@ -61,25 +66,11 @@ public:
 			return 0;
 		else if (v1.size() > v2.size())
 		{
-			while (index1 < v1.size())
-			{
-				if (v1[index1] != 0)
-					return 1;
-				index1++;
-			}
-
-			return 0;
+			return 1;
 		}
 		else
 		{
-			while (index2 < v2.size())
-			{
-				if (v2[index2] != 0)
-					return -1;
-				index2++;
-			}
-
-			return 0;
+			return -1;
 		}
 	}
 };
