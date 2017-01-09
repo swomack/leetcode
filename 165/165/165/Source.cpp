@@ -12,30 +12,15 @@ public:
 	{
 		vector<int> res;
 
-		int index = 0;
-		int cumul = 0;
-		while (index < version.length())
-		{
-			if (version[index] == '.')
-			{
-				res.push_back(cumul);
-				cumul = 0;
-			}
-			else
-			{
-				cumul *= 10;
-				cumul += (version[index] - '0');
-			}
+		char* pch = strtok((char*)version.c_str(), ".");
 
-			index++;
+		while (pch)
+		{
+			res.push_back(atoi(pch));
+			pch = strtok(NULL, ".");
 		}
 
-		if (version[index - 1] != '.')
-			res.push_back(cumul);
-
-		
 		return res;
-
 	}
 
 	int compareVersion(string version1, string version2) 
@@ -48,30 +33,18 @@ public:
 		else
 			v1.resize(v2.size());
 
-		int index1 = 0;
-		int index2 = 0;
-
-		while (index1 < v1.size() && index2 < v2.size())
+		for (int index = 0; index < v1.size(); index++)
 		{
-			if (v1[index1] > v2[index2])
+			if (v1[index] == v2[index])
+				continue;
+
+			if (v1[index] > v2[index])
 				return 1;
-			else if (v1[index1] < v2[index2])
+			else if (v1[index] < v2[index])
 				return -1;
-
-			index1++;
-			index2++;
 		}
 
-		if (v1.size() == v2.size())
-			return 0;
-		else if (v1.size() > v2.size())
-		{
-			return 1;
-		}
-		else
-		{
-			return -1;
-		}
+		return 0;
 	}
 };
 
