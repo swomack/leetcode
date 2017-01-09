@@ -4,16 +4,7 @@
 
 using namespace std;
 
-struct sort_func
-{
-public:
-	bool operator () (const pair<int, int> lhs, const pair<int, int> rhs)
-	{
-		if (lhs.first > rhs.first)
-			return true;
-		return false;
-	}
-};
+
 
 class Solution 
 {
@@ -26,26 +17,25 @@ public:
 		if (nums[nums.size() - 2] < nums[nums.size() - 1])
 			return nums.size() - 1;
 
-		vector<pair<int, int>> sorted(nums.size());
+		int start = 0;
+		int end = nums.size() - 1;
 
-		for (int i = 0; i < nums.size(); i++)
-			sorted[i] = make_pair(nums[i], i);
+		int res = -1;
 
-		sort(sorted.begin(), sorted.end(), sort_func());
-
-		for (int i = 0; i < nums.size(); i++)
+		while (start <= end)
 		{
-			int num = sorted[i].first;
-			int pos = sorted[i].second;
+			int middle = (start + end) / 2;
 
-			if (pos == 0 || pos == nums.size() - 1)
-				continue;
-
-			if (num > nums[pos - 1] && num > nums[pos + 1])
-				return pos;
+			if (nums[middle] > nums[middle - 1] && nums[middle] > nums[middle + 1])
+			{
+				res = middle;
+				break;
+			}
+			else if (nums[middle - 1] > nums[middle])
+				end = middle - 1;
+			else
+				start = middle + 1;
 		}
-
-		return -1;
 	}
 };
 
