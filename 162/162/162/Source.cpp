@@ -36,6 +36,8 @@ public:
 			else
 				start = middle + 1;
 		}
+
+		return res;
 	}
 };
 
