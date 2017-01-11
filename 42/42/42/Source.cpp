@@ -14,12 +14,6 @@ public:
 			return result;
 
 		int i = 0;
-		while (i < height.size() - 1 && height[i] < height[i + 1])
-			i++;
-
-		if (i == height.size() - 1)
-			return result;
-
 		int j = i + 1;;
 		while (j < height.size())
 		{
@@ -36,9 +30,7 @@ public:
 			}
 
 			if (height[i] <= height[j])
-			{
 				i = j;
-			}
 
 			j++;
 		}
