@@ -8,8 +8,6 @@ class Solution
 {
 public:
 
-	
-
 	int search(vector<int>& nums, int target) 
 	{
 		int start = 0;
@@ -22,16 +20,16 @@ public:
 			if (nums[middle] == target)
 				return middle;
 
-			if (target > nums[middle])
+			if (nums[start] <= nums[middle])
 			{
-				if (nums[middle] < nums[start] && nums[middle] <= nums[end] && target >= nums[start] && target > nums[end])
+				if (target < nums[middle] && target >= nums[start])
 					end = middle - 1;
 				else
 					start = middle + 1;
 			}
 			else
 			{
-				if (nums[middle] >= nums[start] && nums[middle] > nums[end] && target <= nums[end] && target < nums[start])
+				if (target > nums[middle] && target <= nums[end])
 					start = middle + 1;
 				else
 					end = middle - 1;
