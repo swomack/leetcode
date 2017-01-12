@@ -9,36 +9,38 @@ class Solution
 public:
 	int findDuplicate(vector<int>& nums) 
 	{
-		int start = 1;
-		int end = nums.size() - 1;
+		//floyd cycle detection
+		int n = nums.size();
+		int slow = n;
+		int fast = n;
 
-		while (start < end)
+		while (true)
 		{
-			int middle = (start + end) / 2;
+			slow = nums[slow - 1];
+			fast = nums[nums[fast - 1] - 1];
 
-			int less = 0;
-			int great = 0;
-
-			for (int i = 0; i < nums.size(); i++)
-			{
-				if (nums[i] <= middle)
-					less++;
-				else
-					great++;
-			}
-
-			if (less > middle)
-				end = middle;
-			else
-				start = middle + 1;
+			if (slow == fast)
+				break;
 		}
 
-		return start;
+		int finder = n;
+
+		while (true)
+		{
+			finder = nums[finder - 1];
+			slow = nums[slow - 1];
+
+			if (slow == finder)
+				break;
+		}
+		return slow;
 	}
 };
 
 int main()
 {
 	Solution s;
+	vector<int> param{ 1,1,2 };
+	int k = s.findDuplicate(param);
 	return 0;
 }
