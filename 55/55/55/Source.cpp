@@ -7,22 +7,33 @@ using namespace std;
 class Solution 
 {
 public:
+
+	bool canJump(vector<int>& nums, vector<bool>& visited, int index)
+	{
+		if (index >= nums.size() - 1)
+			return true;
+
+		if (visited[index])
+			return false;
+
+		visited[index] = true;
+
+		for (int i = nums[index]; i >= 1; i--)
+		{
+			bool ret = canJump(nums, visited, index + i);
+
+			if (ret)
+				return ret;
+		}
+
+		return false;
+	}
+
 	bool canJump(vector<int>& nums) 
 	{
 		vector<bool> visited(nums.size());
 
-		int next_index = nums[0];
-		visited[0] = true;
-
-		while (next_index >= 0 && next_index < nums.size())
-		{
-			//visited[next_index] = true;
-
-			if (nums[next_index] > 0)
-				next_index += nums[next_index];
-			else
-				next_index--;
-		}
+		return canJump(nums, visited, 0);
 	}
 };
 
