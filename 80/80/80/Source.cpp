@@ -22,7 +22,7 @@ public:
 
 		for (; head < nums.size(); head++)
 		{
-			if (nums[head] == nums[tail] && nums[head] == nums[tail - 1])
+			if (nums[head] == nums[tail - 1])
 				continue;
 
 			swap(&nums[++tail], &nums[head]);
