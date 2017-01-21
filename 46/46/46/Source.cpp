@@ -6,19 +6,7 @@ using namespace std;
 
 class Solution {
 public:
-
-	bool exist(vector<int>& permutes, int n)
-	{
-		for (int i = 0; i < permutes.size(); i++)
-		{
-			if (permutes[i] == n)
-				return true;
-		}
-
-		return false;
-	}
-
-	void permute(vector<int>& nums, vector<int>& permutes, vector<vector<int>>& result)
+	void permute(vector<int>& nums, vector<int>& permutes, vector<vector<int>>& result, vector<bool>& exists)
 	{
 		if (nums.size() == permutes.size())
 		{
@@ -28,11 +16,13 @@ public:
 
 		for (int i = 0; i < nums.size(); i++)
 		{
-			if (!exist(permutes, nums[i]))
+			if (!exists[i])
 			{
+				exists[i] = true;
 				permutes.push_back(nums[i]);
-				permute(nums, permutes, result);
+				permute(nums, permutes, result, exists);
 				permutes.pop_back();
+				exists[i] = false;
 			}
 		}
 
@@ -46,8 +36,9 @@ public:
 			return result;
 
 		vector<int> permutes;
+		vector<bool> exists(nums.size());
 
-		permute(nums, permutes, result);
+		permute(nums, permutes, result, exists);
 
 		return result;
 	}
