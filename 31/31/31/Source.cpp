@@ -23,15 +23,13 @@ public:
 
 	int find_swap_index(vector<int>& nums, int k)
 	{
-		int num = INT_MAX;
 		int swap_index = -1;
-
-		for (int i = k + 1; i < nums.size(); i++)
+		for (int i = nums.size() - 1; i > k; i--)
 		{
-			if (nums[i] < num && nums[i] > nums[k])
+			if (nums[i] > nums[k])
 			{
-				num = nums[i];
 				swap_index = i;
+				break;
 			}
 		}
 
@@ -62,13 +60,13 @@ public:
 
 		swap(&nums[replace_index], &nums[swap_index]);
 
-		sort(nums.begin() + replace_index + 1, nums.end());
+		reverse(nums.begin() + replace_index + 1, nums.end());
 	}
 };
 
 int main()
 {
-	vector<int> param{ 9,3,5,2,6,5,4 };
+	vector<int> param{ 1,2 };
 	Solution s;
 
 	s.nextPermutation(param);
