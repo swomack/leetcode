@@ -29,28 +29,26 @@ public:
 			int val_r = s[j] - 'a';
 			int val_l = s[i] - 'a';
 
+			if (map[val_r] == 0)
+			{
+				memset(&running_map[0], 0, running_map.size() * sizeof running_map[0]);
+				i = j + 1;
+				continue;
+			}
+
+
 			running_map[val_r]++;
 
 			if (running_map[val_r] > map[val_r])
 			{
-				if (map[val_r] == 0)
+				while (s[i] != s[j])
 				{
-					fill(running_map.begin(), running_map.end(), 0);
-					//memset(&running_map[0], 0, running_map.size() * sizeof running_map[0]);
-					i = j + 1;
-				}
-				else
-				{
-					while (s[i] != s[j])
-					{
-						running_map[s[i] - 'a']--;
-						i++;
-					}
-					
 					running_map[s[i] - 'a']--;
 					i++;
 				}
-				
+
+				running_map[s[i] - 'a']--;
+				i++;
 			}
 			else if(j - i == length - 1)
 			{
