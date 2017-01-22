@@ -8,6 +8,25 @@ using namespace std;
 class Solution 
 {
 public:
+
+	// counting sort
+	void sortString(string& a)
+	{
+		vector<int> map(26);
+
+		for (int i = 0; i < a.length(); i++)
+			map[a[i] - 'a']++;
+
+		for (int i = 0, j = 0; i < map.size(); i++)
+		{
+			if (map[i] == 0)
+				continue;
+
+			while (map[i]--)
+				a[j++] = 'a' + i;
+		}
+	}
+
 	vector<vector<string>> groupAnagrams(vector<string>& strs) 
 	{
 		vector<vector<string>> result;
@@ -16,7 +35,7 @@ public:
 		for (int i = 0; i < strs.size(); i++)
 		{
 			string cpy = strs[i];
-			sort(strs[i].begin(), strs[i].end());
+			sortString(strs[i]);
 
 			int index = group_map[strs[i]];
 
