@@ -45,11 +45,14 @@ public:
 			{
 				max = nums[i];
 			}
-			
-			if (nums[i] > nums[i - 1])
+			else if (nums[i] < min)
 			{
-				ranges.push_back(make_pair(min, max));
-				min = nums[i - 1];
+				if (max > min + 1)
+				{
+					ranges.push_back(make_pair(min, max));
+				}
+
+				min = nums[i];
 				max = nums[i];
 			}
 		}
