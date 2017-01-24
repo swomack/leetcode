@@ -1,6 +1,5 @@
 #include <iostream>
 #include <stack>
-#include <unordered_map>
 #include <vector>
 
 
@@ -25,29 +24,23 @@ public:
 			return result;
 
 		stack<TreeNode*> nodes;
-		unordered_map<TreeNode*, bool> map;
-		map[NULL] = true;
-
 		nodes.push(root);
 
 		while (!nodes.empty())
 		{
 			TreeNode* n = nodes.top();
+			nodes.pop();
 
-			if (map[n->left] && map[n->right])
-			{
-				map[n] = true;
-				result.push_back(n->val);
-				nodes.pop();
-				continue;
-			}
+			result.push_back(n->val);
+			
+			if (n->left)
+				nodes.push(n->left);
 
 			if (n->right)
 				nodes.push(n->right);
-
-			if (n->left)
-				nodes.push(n->left);
 		}
+
+		reverse(result.rbegin(), result.rend());
 
 		return result;
 	}
