@@ -16,7 +16,6 @@ public:
 
 		strs.push("");
 		int i = 0;
-
 		int number = 0;
 
 		while (i < s.length())
@@ -24,7 +23,6 @@ public:
 			if (s[i] == ']' && ++i)
 			{
 				string kk;
-
 				while (nums.top()--)
 				{
 					kk += strs.top();
