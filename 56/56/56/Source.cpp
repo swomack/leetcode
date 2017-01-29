@@ -35,24 +35,14 @@ public:
 			return result;
 
 		sort(intervals.begin(), intervals.end(), sort_interval());
-
-		stack<Interval> s_ins;
-		s_ins.push(intervals[0]);
+		result.push_back(intervals[0]);
 
 		for (int i = 1; i < intervals.size(); i++)
 		{
-			if (intervals[i].start > s_ins.top().end)
-				s_ins.push(intervals[i]);
+			if (intervals[i].start > result[result.size() - 1].end)
+				result.push_back(intervals[i]);
 			else
-				s_ins.top().end = max(s_ins.top().end, intervals[i].end);
-		}
-
-		result.resize(s_ins.size());
-
-		while (!s_ins.empty())
-		{
-			result[s_ins.size() - 1] = s_ins.top();
-			s_ins.pop();
+				result[result.size() - 1].end = max(result[result.size() - 1].end, intervals[i].end);
 		}
 
 		return result;
