@@ -39,10 +39,11 @@ public:
 
 		for (int i = 1; i < intervals.size(); i++)
 		{
-			if (intervals[i].start > result[result.size() - 1].end)
+			int last = result.size() - 1;
+			if (intervals[i].start > result[last].end)
 				result.push_back(intervals[i]);
 			else
-				result[result.size() - 1].end = max(result[result.size() - 1].end, intervals[i].end);
+				result[last].end = max(result[last].end, intervals[i].end);
 		}
 
 		return result;
