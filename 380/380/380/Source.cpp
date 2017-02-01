@@ -12,14 +12,12 @@ class RandomizedSet
 public:
 
 	vector<int> elements;
-	int random_get_size;
-
 	unordered_map<int, int> position;
 
 	/** Initialize your data structure here. */
 	RandomizedSet() 
 	{
-		random_get_size = 0;
+		
 	}
 
 	/** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
@@ -31,13 +29,7 @@ public:
 			return false;
 		
 		elements.push_back(val);
-		random_get_size++;
-
-
-		elements[elements.size() - 1] = elements[random_get_size - 1];
-		elements[random_get_size - 1] = val;
-		position[val] = random_get_size - 1;
-		
+		position[val] = elements.size() - 1;
 		return true;
 	}
 
@@ -51,51 +43,22 @@ public:
 			return false;
 
 		int pos = it->second;
+		position.erase(it);
 
-		if (pos >= random_get_size)
+		if (pos != elements.size() - 1)
 		{
-
 			elements[pos] = elements[elements.size() - 1];
-			elements.resize(elements.size() - 1);
-
 			position[elements[pos]] = pos;
 		}
-		else
-		{
-			random_get_size--;
-			elements[pos] = elements[random_get_size];
-			elements[random_get_size] = val;
-
-			position[elements[pos]] = pos;
-
-			elements[random_get_size] = elements[elements.size() - 1];
-			elements.resize(elements.size() - 1);
-
-			if(elements.size() > 0)
-				position[elements[random_get_size]] = random_get_size;
-
-			if (random_get_size == 0)
-				random_get_size = elements.size();
-		}
-		position.erase(val);
-
+		
+		elements.resize(elements.size() - 1);
 		return true;
 	}
 
 	/** Get a random element from the set. */
 	int getRandom() 
 	{
-		int pos = rand() % random_get_size;
-		random_get_size--;
-
-		int ret = elements[pos];
-		elements[pos] = elements[random_get_size];
-		elements[random_get_size] = ret;
-
-		if (random_get_size == 0)
-			random_get_size = elements.size();
-
-		return ret;
+		return elements[rand() % elements.size()];
 	}
 };
 
