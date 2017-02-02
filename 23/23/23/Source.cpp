@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
 
 using namespace std;
 
@@ -17,32 +18,27 @@ public:
 	ListNode* mergeKLists(vector<ListNode*>& lists) 
 	{
 		ListNode* head = new ListNode(0);
-		ListNode* run = head;
 
-		while (true)
+		priority_queue<int> q;
+
+		for (int i = 0; i < lists.size(); i++)
 		{
-			int smallest = INT_MAX;
-			int smallest_index = -1;
-
-
-			for (int i = 0; i < lists.size(); i++)
+			while (lists[i])
 			{
-				if (lists[i] && lists[i]->val <= smallest)
-				{
-					smallest = lists[i]->val;
-					smallest_index = i;
-				}
+				q.push(lists[i]->val);
+				lists[i] = lists[i]->next;
 			}
-
-
-			if (smallest_index == -1)
-				break;
-
-			run->next = lists[smallest_index];
-			lists[smallest_index] = lists[smallest_index]->next;
-			run = run->next;
 		}
 
+
+		while (!q.empty())
+		{
+			ListNode* k = new ListNode(q.top());
+			q.pop();
+
+			k->next = head->next;
+			head->next = k;
+		}
 
 		return head->next;
 	}
