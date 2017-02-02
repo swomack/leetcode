@@ -99,23 +99,10 @@ public:
 				if (grid[i][j] == '1')
 				{
 					int fragment_key = i * col + j;
-					if (j - 1 >= 0 && grid[i][j - 1] == '1')
-					{
-						int key = i * col + (j - 1);
-						if (union_set(sets[fragment_key], sets[key]))
-							islands--;
-					}
 
 					if (j + 1 < col && grid[i][j + 1] == '1')
 					{
 						int key = i * col + (j + 1);
-						if (union_set(sets[fragment_key], sets[key]))
-							islands--;
-					}
-
-					if (i - 1 >= 0 && grid[i - 1][j] == '1')
-					{
-						int key = (i - 1) * col + j;
 						if (union_set(sets[fragment_key], sets[key]))
 							islands--;
 					}
