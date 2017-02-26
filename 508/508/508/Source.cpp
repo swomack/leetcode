@@ -17,37 +17,35 @@ class Solution
 {
 public:
 
-	int max_value;
-
-	int fill_map(TreeNode* node, unordered_map<int, int>& sum_map)
+	int fill_map(TreeNode* node, unordered_map<int, int>& sum_map, vector<int>& result, int& max_value)
 	{
 		if (node == NULL)
 			return 0;
 
-		int sum = node->val + fill_map(node->left, sum_map) + fill_map(node->right, sum_map);
+		int sum = node->val + fill_map(node->left, sum_map, result, max_value) + fill_map(node->right, sum_map, result, max_value);
 
 		sum_map[sum]++;
 
-		if (sum_map[sum] > max_value)
+		if (sum_map[sum] == max_value)
+		{
+			result.push_back(sum);
+		}
+		else if (sum_map[sum] > max_value)
+		{
+			result.clear();
+			result.push_back(sum);
 			max_value = sum_map[sum];
+		}
 
 		return sum;
 	}
 
 	vector<int> findFrequentTreeSum(TreeNode* root) 
 	{
-		max_value = 0;
+		int max_value = 0;
 		unordered_map<int, int> map;
-		fill_map(root, map);
-
 		vector<int> result;
-
-		for (unordered_map<int, int>::iterator it = map.begin(); it != map.end(); it++)
-		{
-			if (it->second == max_value)
-				result.push_back(it->first);
-		}
-
+		fill_map(root, map, result, max_value);
 		return result;
 	}
 };
@@ -58,11 +56,11 @@ int main()
 
 	TreeNode* root = new TreeNode(5);
 	root->left = new TreeNode(2);
-	root->left->left = new TreeNode(2);
-	root->left->right = new TreeNode(1);
+	/*root->left->left = new TreeNode(2);
+	root->left->right = new TreeNode(1);*/
 	root->right = new TreeNode(-3);
-	root->right->left = new TreeNode(3);
-	root->right->right = new TreeNode(6);
+	/*root->right->left = new TreeNode(3);
+	root->right->right = new TreeNode(6);*/
 
 	vector<int> res = s.findFrequentTreeSum(root);
 
