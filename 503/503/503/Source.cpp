@@ -12,36 +12,29 @@ class Solution
 public:
 	vector<int> nextGreaterElements(vector<int>& nums)
 	{
-		int actual_size = nums.size();
-		vector<int> res(actual_size, -1);
+		vector<int> res(nums.size(), -1);
 
-		if (actual_size <= 1)
+		if (nums.size() <= 1)
 			return res;
 
-		nums.resize(actual_size * 2);
+		stack<int> lesser_elements;
+		lesser_elements.push(0);
 
-		for (int i = 0; i < actual_size; i++)
-			nums[actual_size + i] = nums[i];
-
-
-		stack<pair<int, int>> lesser_elements;
-		lesser_elements.push({ nums[0], 0 });
-
-		for (int i = 1; i < nums.size(); i++)
+		for (int i = 1; i < nums.size() * 2; i++)
 		{
-			if (nums[i] <= lesser_elements.top().first)
+			if (nums[i % nums.size()] <= nums[lesser_elements.top()])
 			{
-				lesser_elements.push({ nums[i], i });
+				lesser_elements.push(i % nums.size());
 				continue;
 			}
 
-			while (!lesser_elements.empty() && lesser_elements.top().first < nums[i])
+			while (!lesser_elements.empty() && nums[lesser_elements.top()] < nums[i % nums.size()])
 			{
-				res[lesser_elements.top().second % actual_size] = nums[i];
+				res[lesser_elements.top()] = nums[i % nums.size()];
 				lesser_elements.pop();
 			}
 
-			lesser_elements.push({ nums[i], i });
+			lesser_elements.push(i % nums.size());
 		}
 
 		return res;
