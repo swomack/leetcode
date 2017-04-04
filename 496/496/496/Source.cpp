@@ -12,39 +12,39 @@ class Solution
 public:
 	vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) 
 	{
-		vector<int> res;
+		vector<int> res(findNums.size(), -1);
 
 		if (findNums.size() <= 0 || nums.size() <= 1)
 			return res;
 
-		unordered_map<int, int> next_greater_map;
-		
-		stack<pair<int, int>> lesser_elements;
+		unordered_map<int, int> elements_map;
+		int index = 1;
+		for_each(findNums.begin(), findNums.end(), [&elements_map, &index](int element) {
+			elements_map[element] = index++; 
+		});
 
-		lesser_elements.push({ nums[0], 0 });
+
+		stack<int> lesser_elements;
+		lesser_elements.push(nums[0]);
 
 		for (int i = 1; i < nums.size(); i++)
 		{
-			if (nums[i] <= lesser_elements.top().first)
+			if (nums[i] <= lesser_elements.top())
 			{
-				lesser_elements.push({ nums[i], i });
+				lesser_elements.push(nums[i]);
 				continue;
 			}
 
-			while (!lesser_elements.empty() && lesser_elements.top().first < nums[i])
+			while (!lesser_elements.empty() && lesser_elements.top() < nums[i])
 			{
-				next_greater_map[lesser_elements.top().first] = i;
+				if (elements_map[lesser_elements.top()] > 0)
+				{
+					res[elements_map[lesser_elements.top()] - 1] = nums[i];
+				}
 				lesser_elements.pop();
 			}
 
-			lesser_elements.push({ nums[i], i });
-		}
-
-		
-
-		for (int i = 0; i < findNums.size(); i++)
-		{
-			res.push_back(next_greater_map[findNums[i]] > 0 ? nums[next_greater_map[findNums[i]]] : -1);
+			lesser_elements.push(nums[i]);
 		}
 
 		return res;
