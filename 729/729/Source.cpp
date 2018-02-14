@@ -7,34 +7,43 @@ using namespace std;
 class MyCalendar {
 	struct booking {
 		int start, end;
+		booking* left;
+		booking* right;
 	} ;
 
-	vector<booking> bookings;
+	booking* root;
 
 public:
 	MyCalendar() {
-		bookings.clear();
+		root = nullptr;
 	}
 
 	bool book(int start, int end) {
-
-		end--;
-
-		for (auto element : bookings)
-		{
-			if (doesOverlap(element, { start, end }))
-				return false;
-		}
-
-		bookings.push_back({ start, end});
-		return true;
+		return bookingTraverse(&root, start, --end);
 	}
 
-	bool doesOverlap(const booking& book1, const booking& book2)
+	bool bookingTraverse(booking** nodeRef, int start, int end)
 	{
-		if (book1.end >= book2.start && book1.start <= book2.start)
+		if (*nodeRef == nullptr)
+		{
+			*nodeRef = new booking {start, end, nullptr, nullptr};
 			return true;
-		else if (book1.start <= book2.end && book1.end >= book2.start)
+		}
+
+		if (doesOverlap(*nodeRef, start, end))
+			return false;
+
+		if ((*nodeRef)->start > end)
+			return bookingTraverse(&((*nodeRef)->left), start, end);
+		else
+			return bookingTraverse(&((*nodeRef)->right), start, end);
+	}
+
+	bool doesOverlap(booking* book1, int start, int end)
+	{
+		if (book1->end >= start && book1->start <= end)
+			return true;
+		else if (book1->start <= end && book1->end >= start)
 			return true;
 
 		return false;
